@@ -1094,7 +1094,7 @@ h6 {
 }
 
 .hero-banner__split-arrow:hover .hero-banner__split-arrow-image {
-    background-color: #52b4f8;
+    background-color: var(--color-hover);
 }
 
 /* Plays once, triggered by scroll-bounce.js the instant the arrow crosses the viewport's
