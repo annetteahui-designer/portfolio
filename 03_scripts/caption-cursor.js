@@ -21,6 +21,12 @@
             return;
         }
 
+        // Mouse-only: no hover on a touch screen, so this pill (and the caption-then-pause
+        // handoff it drives) never shows on tablet/mobile.
+        if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            return;
+        }
+
         var cursor = document.createElement('div');
         cursor.className = 'caption-cursor';
         cursor.setAttribute('aria-hidden', 'true');

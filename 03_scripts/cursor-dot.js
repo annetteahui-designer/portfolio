@@ -3,6 +3,13 @@
         return;
     }
 
+    // Mouse-only: a touch screen has no hover to follow, and no real cursor to replace —
+    // tablet/mobile never get the dot (same guard repeated in view-cursor.js, caption-cursor.js,
+    // topic-hover.js, so none of the cursor-follower effects show there either).
+    if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        return;
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         var dot = document.createElement('div');
         dot.className = 'cursor-dot';

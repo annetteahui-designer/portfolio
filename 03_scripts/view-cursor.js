@@ -81,6 +81,13 @@
     ];
 
     document.addEventListener('DOMContentLoaded', function () {
+        // Mouse-only: no hover on a touch screen, so this circle (and the tap-anywhere click
+        // forwarding it enables for target #5) never shows on tablet/mobile — the real button
+        // underneath still works, just without the hover affordance.
+        if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            return;
+        }
+
         var cursor = document.createElement('div');
         cursor.className = 'view-cursor';
         cursor.setAttribute('aria-hidden', 'true');
