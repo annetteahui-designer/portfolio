@@ -1074,11 +1074,27 @@ h6 {
     }
 }
 
+/* The arrow is a solid-color SVG masked onto this element rather than an <img>, so its visible
+   fill is actually a background-color showing through the mask — swapping that color on hover
+   recolors just the arrow's own silhouette, not the whole box. */
 .hero-banner__split-arrow-image {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background-color: var(--color-ink);
+    -webkit-mask-image: url('../00_assets/01_images/Homepage/webPortfolio_arrow.svg');
+    mask-image: url('../00_assets/01_images/Homepage/webPortfolio_arrow.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    transition: background-color 0.4s ease;
+}
+
+.hero-banner__split-arrow:hover .hero-banner__split-arrow-image {
+    background-color: #e83323;
 }
 
 /* Plays once, triggered by scroll-bounce.js the instant the arrow crosses the viewport's
