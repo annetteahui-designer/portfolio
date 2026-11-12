@@ -1,0 +1,24 @@
+.DS_Store
+.claude/
+
+# Raw design-source files — never served by the live site, and some exceed GitHub's 100MB
+# per-file limit (e.g. the Printed Forest .psd is 152MB).
+*.psd
+*.ai
+*.aep
+*.indd
+*.sketch
+
+# Dev-only tooling and archived/reference material, not part of the deployed site.
+dev-tools/
+01_index/archive/
+00_assets/06_references/
+
+# Confirmed-unused stock footage / scratch exports, not referenced by any page.
+00_assets/01_images/DocuSign/Video assets/
+00_assets/01_images/01_IBM/Graphics/Posters/Posters &Postcards/untitled folder/
+00_assets/01_images/Homepage/Hero_TEST.json
+00_assets/01_images/Homepage/Hero_TEST_lot.json
+00_assets/01_images/Homepage/Hero_TEST.mp4
+00_assets/01_images/Homepage/Composition 2.json
+00_assets/01_images/Homepage/Hero-lottie.json

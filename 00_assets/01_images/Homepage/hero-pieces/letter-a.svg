@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="730.49 47.35 756.50 836.12"><defs>
+    <style>
+      .st0 {
+        fill: #1a5101;
+      }
+
+      .st1 {
+        fill: #ffce00;
+      }
+
+      .st2 {
+        fill: #ff98db;
+      }
+
+      .st3 {
+        fill: #75ff66;
+      }
+
+      .st4 {
+        stroke: #231f20;
+      }
+
+      .st4, .st5 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .st6 {
+        fill: #959af4;
+      }
+
+      .st7 {
+        fill: #00b6ff;
+      }
+
+      .st5 {
+        stroke: #fe7237;
+      }
+
+      .st8 {
+        fill: #fe7237;
+      }
+
+      .st9 {
+        fill: #f549b7;
+      }
+
+      .st10 {
+        fill: #f2f2f2;
+      }
+
+      .st11 {
+        fill: #402212;
+      }
+
+      .st12 {
+        fill: #e8262b;
+      }
+
+      .st13 {
+        fill: #fae0be;
+      }
+
+      .st14 {
+        fill: #0f0f0f;
+      }
+
+      .st15 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <path class="st13" d="M477.86,683.13l-3.61,53.95-36.59-39.48,40.2-14.46Z"/>
+    </clipPath>
+  </defs><g xmlns="http://www.w3.org/2000/svg" id="Layer_13">
+    <g>
+      <path class="st10" d="M1320.69,879.46l-80.26-234.36h-266.56l-82.4,234.36h-156.98L1029.83,51.35h162.35l290.81,828.12h-162.3ZM1196.32,513.64l-87.21-258.51-93.44,258.51h180.64Z"/>
+      <path d="M1257.58,621.11h-300.71l-82.4,234.36h-105.94l45.16-126.63,233.07-653.49h128.42l273.95,780.12h-111.29l-80.26-234.36ZM1229.75,537.64l-119.85-355.28-128.41,355.28h248.26Z"/>
+    </g>
+  </g></svg>

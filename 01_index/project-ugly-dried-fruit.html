@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="../00_assets/01_images/Logo/webPortfolio_logo.webp">
+    <title>Ugly Dried Fruit — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&family=Geist:wght@400&family=Nixie+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../02_styles/styles.css?v=239">
+</head>
+<body>
+    <div id="dev-toggles" class="dev-toggles">
+        <button id="grid-toggle" class="dev-toggle" type="button" aria-pressed="false">Grid</button>
+        <button id="tokens-toggle" class="dev-toggle" type="button" aria-pressed="false">Tokens</button>
+        <button id="weight-toggle" class="dev-toggle" type="button" aria-pressed="false">Weight</button>
+            <button id="reveal-toggle" class="dev-toggle" type="button" aria-pressed="false">R</button>
+            <button id="measure-toggle" class="dev-toggle" type="button" aria-pressed="false">M</button>
+            <button id="notes-toggle" class="dev-toggle" type="button" aria-pressed="false">N</button>
+            <div class="dev-toggle-font" data-font-picker>
+                <button id="font-toggle" class="dev-toggle" type="button" aria-expanded="false" aria-haspopup="true">Font: Nimbus</button>
+                <div class="dev-toggle-font__menu" id="font-menu" hidden>
+                    <button type="button" class="dev-toggle-font__option is-active" data-font="nimbus">Nimbus</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="elizeth">Elizeth</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="elizeth-condensed">Elizeth Condensed</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="elizeth-light">Elizeth Light</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="affairs">Affairs</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="american-grotesk">American Grotesk</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="nixie-one">Nixie One</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="geist">Geist</button>
+                </div>
+            </div>
+            <button id="type-scale-toggle" class="dev-toggle" type="button" aria-pressed="false">Type</button>
+    </div>
+    <div id="grid-overlay" class="grid-overlay" aria-hidden="true">
+        <div class="grid-overlay__inner"></div>
+    </div>
+    <div id="tokens-panel" class="tokens-panel" aria-hidden="true">
+        <div class="tokens-panel__handle" aria-hidden="true"></div>
+    </div>
+
+    <header class="navbar navbar--no-border">
+        <div class="navbar__inner">
+            <a href="index.html" class="logo" aria-label="Annette Hui"><span class="logo__lottie" data-lottie-src="../00_assets/03_animations/about-face-default.json" data-lottie-trigger="hover" data-lottie-actions="[{&quot;label&quot;:&quot;Spin&quot;,&quot;src&quot;:&quot;../00_assets/03_animations/logo-spin.json?v=2&quot;}]"><img class="logo__image" src="../00_assets/01_images/Homepage/about-face.webp" alt=""></span></a>
+            <div class="navbar__filler">@ NY</div>
+            <time class="navbar__clock" id="home-clock">00:00:00 NY</time>
+
+            <div class="navbar__controls">
+                <nav class="nav-block" aria-label="Primary">
+                    <a href="index.html#work" class="nav-block__item is-current" aria-current="page">
+                        <span class="nav-block__item-label">
+                            <span class="nav-block__item-label-inner">
+                                <span class="nav-block__item-text">Work</span>
+                                <span class="nav-block__item-text" aria-hidden="true">Work</span>
+                            </span>
+                        </span>
+                    </a>
+                    <a href="playground.html" class="nav-block__item">
+                        <span class="nav-block__item-label">
+                            <span class="nav-block__item-label-inner">
+                                <span class="nav-block__item-text">Playground</span>
+                                <span class="nav-block__item-text" aria-hidden="true">Playground</span>
+                            </span>
+                        </span>
+                    </a>
+                    <a href="about.html" class="nav-block__item">
+                        <span class="nav-block__item-label">
+                            <span class="nav-block__item-label-inner">
+                                <span class="nav-block__item-text">About</span>
+                                <span class="nav-block__item-text" aria-hidden="true">About</span>
+                            </span>
+                        </span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="project">
+            <div class="project__inner">
+                <aside class="project-sidebar">
+
+                    <span class="project-toc__line" aria-hidden="true"></span>
+
+                    <div class="project-sidebar__block">
+                        <div class="project-sidebar__heading-row">
+                            <h3 class="project-sidebar__heading">Table of Contents</h3>
+                            <button type="button" class="project-sidebar__toggle" aria-expanded="true" aria-label="Collapse table of contents">
+                                <span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_left</span>
+                            </button>
+                        </div>
+                        <nav class="project-toc">
+                            <a class="project-toc__link" href="#intro">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Intro
+                            </a>
+                            <a class="project-toc__link" href="#sliced-vs-diced-fruit">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Sliced vs Diced Fruit Packaging
+                            </a>
+                            <a class="project-toc__link" href="#packaging-in-the-wild">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Packaging out in the wild
+                            </a>
+                        </nav>
+                    </div>
+
+                </aside>
+
+                <div class="project-content">
+                    <section class="project-intro" id="intro">
+                        <h1 class="project-title">Ugly Dried Fruit</h1>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Homepage/webPortfolio_ugly_cover.png" alt="Ugly Dried Fruit cover illustration"></div>
+                            <div class="project-media project-media--span-6" data-reveal>
+                                <div class="project-video">
+                                    <video class="project-media__image ratio-16-9" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_screenRecording.mp4" autoplay loop muted playsinline></video>
+                                    <button type="button" class="project-video__toggle" aria-label="Pause video" data-video-toggle>
+                                        <span class="material-symbols-outlined" aria-hidden="true">pause</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-facts">
+                            <div class="project-facts__col">
+                                <div class="project-facts__item project-facts__tags">
+                                    <h3 class="project-facts__label">Design Areas</h3>
+                                    <ul class="project-tags">
+                                        <li class="project-tags__item">
+                                            <span class="project-tags__icon project-tags__icon--green material-symbols-outlined" aria-hidden="true">imagesmode</span>
+                                            Packaging Design
+                                        </li>
+                                        <li class="project-tags__item">
+                                            <span class="project-tags__icon project-tags__icon--pink material-symbols-outlined" aria-hidden="true">edit</span>
+                                            Illustration
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="project-facts__item">
+                                    <h3 class="project-facts__label">Team</h3>
+                                    <p class="project-facts__value">Annette Hui, Dev Gupta, Kaitlyn Gupta</p>
+                                </div>
+                            </div>
+                            <div class="project-facts__col project-facts__description">
+                                <p class="project-intro__text">Ugly is on a mission to rescue imperfect produce, transforming it into delicious, all-natural, healthy dried fruit snacks.<br><br>However, designing the packaging posed a unique challenge. When packaging various flavors or types of fruit, the team had to ensure a systematic approach. This involved careful consideration of layout, color palette, and distinguishing similar fruits. Additionally, they had to account for how the packaging would appear when the fruit was sliced versus diced.<br><br>Now available at Sprouts and featured on Good Morning America, Ugly's innovative approach to packaging highlights their commitment to sustainability and delicious, nutritious snacks.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="project-section" id="sliced-vs-diced-fruit">
+                        <h2 class="project-section__heading">Sliced vs Diced Fruit Packaging</h2>
+                        <p class="project-section__text">Ugly's sliced packaging has a darker background with lighter elements throughout. This project is tightly systemized with the illustrations being easily interchangeable.<br><br>As you can see the diced packaging is the reverse color palette.<br><br>Kaitlyn Gupta proposed the general layout while the rest of us made tweaks, and I developed the illustrations.</p>
+
+                        <div class="compare-columns">
+                            <div class="compare-columns__col">
+                                <div class="category-hook">
+                                    <span class="category-hook__text">Sliced</span>
+                                    <svg class="category-hook__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="m560-120-57-57 144-143H200v-480h80v400h367L503-544l56-57 241 241-240 240Z"/></svg>
+                                </div>
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_cherriesSliced.jpg" alt="Ugly Dried Fruit sliced cherries packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_kiwiSliced.jpg" alt="Ugly Dried Fruit sliced kiwi packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_peachesSliced.png" alt="Ugly Dried Fruit sliced peaches packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_nectarinesSliced.png" alt="Ugly Dried Fruit sliced nectarines packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_apricotSliced.png" alt="Ugly Dried Fruit sliced apricot packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_mangoSliced.png" alt="Ugly Dried Fruit sliced mango packaging">
+                            </div>
+                            <div class="compare-columns__col">
+                                <div class="category-hook">
+                                    <span class="category-hook__text">Diced</span>
+                                    <svg class="category-hook__icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="currentColor"><path d="m560-120-57-57 144-143H200v-480h80v400h367L503-544l56-57 241 241-240 240Z"/></svg>
+                                </div>
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_cherriesDiced.png" alt="Ugly Dried Fruit diced cherries packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_kiwiDiced.png" alt="Ugly Dried Fruit diced kiwi packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_peachesDiced.png" alt="Ugly Dried Fruit diced peaches packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_nectarinesDiced.png" alt="Ugly Dried Fruit diced nectarines packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_apricotDiced.png" alt="Ugly Dried Fruit diced apricot packaging">
+                                <img class="project-media__image" style="aspect-ratio: 3 / 4;" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_mangoDiced.png" alt="Ugly Dried Fruit diced mango packaging">
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <section class="project-section" id="packaging-in-the-wild">
+                        <h2 class="project-section__heading">Packaging out in the wild</h2>
+                        <p class="project-section__text">A look at the packaging system in real-world context — mockups, detail shots, and press photography.</p>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_mockup.png" alt="Ugly Dried Fruit packaging mockup"></div>
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/UglyDriedFruit/webPortfolio_uglyDriedFruit_pressPhoto.jpeg" alt="Ugly Dried Fruit product photo"></div>
+                        </div>
+                    </section>
+
+                    <nav class="project-pagination" aria-label="Project">
+                        <div class="project-pagination__group">
+                            <a class="project-pagination__link" href="index.html#work">
+                                <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+                                All Work
+                            </a>
+                            <a class="project-pagination__link" href="project-corporation.html">
+                                <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+                                Previous Project
+                            </a>
+                        </div>
+                        <a class="project-pagination__link project-pagination__link--next" href="project-layland.html">
+                            Next Project
+                            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer" id="playground">
+        <div class="site-footer__inner">
+            <div class="site-footer__sketch">
+              <div class="site-footer__sketch-inner">
+                <div class="site-footer__sketch-heading-col">
+                    <p class="site-footer__sketch-heading" data-bump-heading><span class="site-footer__sketch-heading-word">Wanna</span><br><span class="site-footer__sketch-heading-word">chat?</span></p>
+                </div>
+                <div class="site-footer__sketch-list-col">
+                    <a class="site-footer__sketch-item" href="mailto:annette.a.hui@gmail.com">
+                        <span class="site-footer__sketch-item-index">01/</span>
+                        <span class="site-footer__sketch-item-label">annette.a.hui@gmail.com</span>
+                    </a>
+                    <a class="site-footer__sketch-item" href="https://linkedin.com" target="_blank" rel="noopener">
+                        <span class="site-footer__sketch-item-index">02/</span>
+                        <span class="site-footer__sketch-item-label">LinkedIn</span>
+                    </a>
+                    <a class="site-footer__sketch-item" href="https://instagram.com" target="_blank" rel="noopener">
+                        <span class="site-footer__sketch-item-index">03/</span>
+                        <span class="site-footer__sketch-item-label">Instagram</span>
+                    </a>
+                </div>
+              </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../03_scripts/draggable.js"></script>
+    <script src="../03_scripts/grid-overlay.js"></script>
+    <script src="../03_scripts/font-toggle.js?v=2"></script>
+    <script src="../03_scripts/type-scale-toggle.js?v=1"></script>
+    <script src="../03_scripts/tokens-panel.js"></script>
+    <script src="../03_scripts/media-weight-flag.js"></script>
+    <script src="../03_scripts/reveal-filenames.js"></script>
+    <script src="../03_scripts/measure-tool.js"></script>
+    <script src="../03_scripts/notes-tool.js"></script>
+    <script src="../03_scripts/dev-hotkeys.js"></script>
+    <script src="../03_scripts/nyc-clock.js"></script>
+    <script src="../03_scripts/footer-heading-bump.js"></script>
+    <script src="../03_scripts/project-video-toggle.js?v=2"></script>    <script src="../03_scripts/cursor-dot.js?v=3"></script>
+    <script src="../03_scripts/view-cursor.js?v=3"></script>
+    <script src="../03_scripts/nav-scroll.js"></script>
+    <script src="../03_scripts/vendor/lottie_light.min.js"></script>
+    <script src="../03_scripts/lottie-player.js?v=3"></script>
+    <script src="../03_scripts/project-toc.js?v=2"></script>
+    <script src="../03_scripts/mobile-toc-menu.js?v=2"></script>
+    <script src="../03_scripts/project-sidebar-toggle.js?v=3"></script>
+    <script src="../03_scripts/project-toc-line.js?v=4"></script>
+    <script src="../03_scripts/scroll-reveal.js"></script>
+    <script src="../03_scripts/inline-editor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            makeDraggable(document.getElementById('dev-toggles'));
+            makeDraggable(document.querySelector('.tokens-panel__handle'), document.getElementById('tokens-panel'));
+        });
+    </script>
+</body>
+</html>

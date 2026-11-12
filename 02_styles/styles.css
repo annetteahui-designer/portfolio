@@ -1,0 +1,4980 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    /* keeps anchor jumps (#work, #about) from landing under the sticky nav's tall logo */
+    scroll-padding-top: var(--scroll-offset);
+    /* body { cursor: none } alone leaves html itself at the default "auto" — since html is
+       body's parent, not a descendant, that default shows through (the real arrow) over any
+       area not covered by body's own box, e.g. below short page content or the scrollbar
+       gutter. Setting it here too closes that gap. */
+    cursor: none;
+    /* the native scrollbar is browser/OS chrome, not part of the document — cursor:none can
+       never reach it, so it was the one place the real arrow could always show (every tall
+       page has one, running the full height of the viewport). Hiding it removes that gap
+       entirely; scrolling itself is unaffected. */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+@font-face {
+    font-family: "IBM Punch Card";
+    src: url("../00_assets/02_type/IBM Punch Card/IBMPunchCard_Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Nimbus Sans L";
+    src: url("../00_assets/02_type/Nimbus Sans L/nimbus-sans-l.regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Elizeth — test only: resolved from the local install in Font Book (no file in the repo
+   yet), so this only renders on machines that have it installed. Swap to a url() src once
+   the font file itself is dropped into 00_assets/02_type/Elizeth/ so visitors get it too. */
+@font-face {
+    font-family: "Elizeth";
+    src: local("Elizeth"), local("Elizeth Regular"), local("Elizeth-Regular");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Elizeth";
+    src: local("Elizeth Light"), local("ElizethLight"), local("Elizeth-Light");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Elizeth Condensed";
+    src: local("Elizeth Condensed"), local("ElizethCondensed"), local("Elizeth-Condensed"), local("Elizeth Condensed Regular");
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* American Grotesk — test only, same local-install approach as Elizeth above. */
+@font-face {
+    font-family: "American Grotesk";
+    src: local("Test American Grotesk"), local("TEst American Grotesk"), local("TestAmericanGrotesk"), local("Test American Grotesk Regular");
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Affairs Test — test only, same local-install approach as Elizeth above. */
+@font-face {
+    font-family: "Affairs";
+    src: local("Affairs Test"), local("Affairs Test Regular"), local("AffairsTest-Regular"), local("Affairs-Test-Regular");
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Type — Nimbus Sans L served locally (see 00_assets/02_type/Nimbus Sans L). --font-display
+   and --font-display-weight default to the same thing and are overridden live by the Font
+   dev-toggle's dropdown (font-toggle.js) when testing a different headline typeface. */
+:root {
+    --font-primary: "Nimbus Sans L", -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-display: var(--font-primary);
+    --font-display-weight: 400;
+
+    /* Type scale tokens */
+
+    --type-12: 13px;
+    --type-16: 16px;
+    --type-20: 20px;
+    --type-24: 24px;
+    --type-28: 28px;
+    --type-32: 32px;
+    --type-40: 40px;
+    --type-48: 48px;
+    --type-64: 64px;
+    --type-80: 80px;
+    --type-96: 96px;
+    --type-128: 128px;
+
+    /* Spacing tokens — IBM Carbon spacing scale */
+    --spacing-01: 2px;
+    --spacing-02: 4px;
+    --spacing-03: 8px;
+    --spacing-04: 12px;
+    --spacing-05: 16px;
+    --spacing-06: 24px;
+    --spacing-07: 32px;
+    --spacing-08: 40px;
+    --spacing-09: 48px;
+    --spacing-10: 64px;
+    --spacing-11: 80px;
+    --spacing-12: 96px;
+    --spacing-13: 160px;
+
+    /* Layout — three ranges, each with its own column count:
+       mobile  < 672px      4 columns
+       tablet  672–1055px   8 columns
+       desktop ≥ 1056px    16 columns
+       Margin/gutter mirror the grid overlay; the section tokens below scale with them */
+    --page-margin: 24px;
+    --page-gutter: 16px;
+    --section-pad-top: var(--spacing-07);
+    --section-pad-bottom: var(--spacing-10);
+    --section-gap: var(--spacing-09);
+    --title-gap: var(--spacing-07);
+    --radius-media: 16px;
+
+    /* Navbar — the logo sets its height, and anything that has to clear or line up with the bar
+       (the sticky Table of Contents) reads --navbar-height instead of a magic number */
+    --logo-size: 48px;
+    --scroll-offset: 120px;
+    --navbar-pad: var(--spacing-05);
+    --navbar-height: calc(var(--logo-size) + var(--navbar-pad) * 2 + 1px);
+
+    /* Reusable component treatments — pills (buttons/nav links) and tag chips share these
+       everywhere so they can't drift apart page to page */
+    /* list marker — a text-style ✴ (U+FE0E stops it turning into an emoji) used by the hero and About lists */
+    --list-marker: "\2734\FE0E";
+    --pill-padding-x: 20px;
+    --pill-padding: var(--spacing-04) var(--pill-padding-x);
+    --pill-gap: var(--spacing-02);
+    --tag-padding: 6px var(--spacing-04);
+    --tag-gap: var(--spacing-02);
+
+    /* Brand accent colors */
+    --color-green: #54fc84;
+    --color-blue: #6cdaff;
+    --color-pink: #ff49cb;
+    --color-yellow: #fffc45;
+    --color-orange: #f8820c;
+    --color-ink: #0f0f0f;
+    --color-line: #e0e0e0;
+    --color-gray-10: #f4f4f4;
+    /* the circle that follows the cursor over things with a word to say (View, Connect, Pause…) */
+    --color-cursor: #ff2cf8;
+    /* genuine :hover feedback — nav/prompt hover fill, the view-cursor circle, the caption
+       pill. Named separately from --color-hover-green below, which despite its name is also
+       reused for a few permanently-visible (non-hover) UI accents that should stay green. */
+    --color-hover: #00b8ff;
+    --color-hover-green: #00e95c;
+}
+
+
+/* Dev toggle (type-scale-toggle.js) — previews bumping every --type-12 and --type-16 usage
+   site-wide (labels, tags, body copy, sidebar headings, etc.) up to 14px/20px, without
+   actually committing to the change. */
+body.is-type-bumped {
+    --type-12: 14px;
+    --type-16: 20px;
+}
+
+@media (min-width: 672px) {
+    :root {
+        --page-margin: 32px;
+        --page-gutter: 24px;
+        --section-pad-top: var(--spacing-09);
+        --section-pad-bottom: var(--spacing-11);
+        --section-gap: var(--spacing-10);
+        --title-gap: var(--spacing-08);
+        --radius-media: 24px;
+        --logo-size: 64px;
+        --scroll-offset: 180px;
+        --navbar-pad: var(--spacing-06);
+    }
+}
+
+@media (min-width: 1056px) {
+    :root {
+        --page-margin: 48px;
+        --page-gutter: 32px;
+        --section-pad-top: var(--spacing-09);
+        --section-pad-bottom: var(--spacing-12);
+        --section-gap: var(--spacing-12);
+        --title-gap: var(--spacing-09);
+        --logo-size: 76px;
+    }
+}
+
+body {
+    margin: 0;
+    /* full-bleed elements (.hero--fullbleed .hero__visual) break out to 100vw, which would
+       otherwise introduce a horizontal scrollbar on browsers where vw includes the
+       vertical scrollbar's own width */
+    overflow-x: hidden;
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 300;
+    /* Matches the ratio the 16px hero paragraph (.hero-banner__copy) already used at 1.5 —
+       body copy across every page now breathes the same amount, proportionally, instead of
+       the old 1.3 reading tight next to it. Fixed-height chips/pills/nav items (tags, sidebar
+       heading, nav-block links, TOC links) all set their own line-height already and are
+       unaffected by this. */
+    line-height: 1.5;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: 400;
+}
+
+/* Uppercase body text breaks Material Symbols ligature matching, which keys off literal lowercase names.
+   FILL 0 (outlined) is the site-wide default; the pause/play icon opts into FILL 1 below — the
+   font request only started actually carrying a FILL axis when that icon needed it, so this
+   explicit 0 keeps every other icon's appearance exactly as it was before. */
+.material-symbols-outlined {
+    text-transform: none;
+    font-variation-settings: 'FILL' 0;
+}
+
+/* Layout container — aligns real content to the grid overlay's margins */
+.navbar__inner,
+.hero__inner,
+.hero-banner__inner,
+.work__inner,
+.about__inner,
+.project__inner,
+.components__inner,
+.site-footer__inner {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1584px;
+    margin: 0 auto;
+    padding: 0 var(--page-margin);
+}
+
+/* Section hairlines (Work, About, Project, Components) — a plain border on the full-bleed
+   section would run edge to edge of the window; these pseudo-elements instead match the
+   exact width/centring math of the *__inner column above, so the line only ever spans the
+   same columns the content does. */
+.work,
+.about,
+.project,
+.components {
+    position: relative;
+}
+
+.work::before,
+.work::after,
+.about::after,
+.project::after,
+.components::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: calc(100% - 2 * var(--page-margin));
+    max-width: calc(1584px - 2 * var(--page-margin));
+    margin: 0 auto;
+    height: 1px;
+    background: var(--color-line);
+}
+
+.work::before {
+    top: 0;
+}
+
+.work::after,
+.about::after,
+.project::after,
+.components::after {
+    bottom: 0;
+}
+
+/* Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid var(--color-line);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.navbar--no-border {
+    background: transparent;
+    border-bottom-color: transparent;
+}
+
+.navbar.is-minimal {
+    background-color: transparent;
+    border-bottom-color: transparent;
+    /* the invisible logo leaves a "dead zone" that would otherwise swallow clicks
+       meant for whatever sits behind it (e.g. the Table of Contents once it
+       shifts up into this space) — let those pass through, then re-enable
+       clicks just on the still-visible controls */
+    pointer-events: none;
+}
+
+.navbar.is-minimal .navbar__controls {
+    pointer-events: auto;
+}
+
+.navbar__inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--spacing-05);
+    padding-top: var(--navbar-pad);
+    padding-bottom: var(--navbar-pad);
+}
+
+/* Stable variant (home, About): the bar keeps its height in the glass state. The logo fades out
+   in place but holds its space, and the nav block glides up to the top of the bar — where it sits
+   on pages that collapse the logo instead. Nothing under the bar moves when the state changes,
+   which keeps scroll targets exact (a jump to a section that lands as the bar shrinks would
+   overshoot by the difference) and stops a shrinking bar nudging the scroll position back
+   across a scroll trigger, which flickers. */
+.navbar.navbar--stable.is-minimal .logo {
+    max-height: 300px;
+}
+
+.navbar--stable .navbar__controls {
+    transition: transform 0.4s ease;
+}
+
+.navbar--stable.is-minimal .navbar__controls {
+    transform: translateY(calc((42px - var(--logo-size)) / 2));
+}
+
+/* Name variant (About page): "Annette Hui" takes the logo's place, sized and padded like the nav
+   block beside it, and fades away once the bar goes glass. It keeps its space when hidden, so
+   the bar's height never changes with the state (a bar that changed height would nudge the
+   scroll position back across the trigger and flicker). */
+.navbar--name .logo {
+    display: none;
+}
+
+/* the row is as tall as the logo would make it, so the name, clock and nav sit exactly where they
+   do on every other page (centred in that row) and the page below starts at the same height */
+.navbar--name .navbar__inner {
+    min-height: calc(var(--logo-size) + var(--navbar-pad) * 2);
+}
+
+.navbar__name {
+    display: block;
+    justify-self: start;
+    /* pulled back by its own side padding (+ the 1px border) so the *text* starts on the page
+       margin, level with the content below; the pill's glass reaches into the margin */
+    margin-left: calc((var(--pill-padding-x) + 1px) * -1);
+    padding: var(--pill-padding);
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 400;
+    line-height: var(--spacing-05);
+    color: var(--color-ink);
+    text-decoration: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* gone in the glass state (visibility also takes it out of the tab order) */
+.navbar.is-minimal .navbar__name {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Below 365px there is no room for the name beside the nav, so those screens keep the logo
+   (which then behaves as in the stable variant above). */
+@media (max-width: 364px) {
+    .navbar--name .logo {
+        display: block;
+    }
+
+    .navbar__name {
+        display: none;
+    }
+}
+
+/* the clock only has room once the bar can hold logo + clock + nav side by side */
+@media (min-width: 900px) {
+    .navbar__inner {
+        grid-template-columns: 1fr auto 1fr;
+    }
+}
+
+
+.logo {
+    display: block;
+    justify-self: start;
+    max-height: 300px;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-ink);
+    text-decoration: none;
+    overflow: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease, max-height 0.4s ease, transform 0.3s ease;
+}
+
+.logo__image {
+    display: block;
+    width: var(--logo-size);
+    height: var(--logo-size);
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* the animated logo: the same round 48px / 64px disc the image was, with the Lottie clipped to
+   it. The image inside is the fallback until the animation loads (and is removed after). */
+.logo__lottie {
+    position: relative;
+    display: block;
+    width: var(--logo-size);
+    height: var(--logo-size);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.logo__lottie svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* The scale lives on the outermost .logo, not the disc/image inside it — .logo and
+   .logo__lottie both clip their own contents (overflow: hidden, for the circular mask and
+   the collapse transition), so scaling something nested inside either would get cropped by
+   that clip the instant it grew past the disc's own bounds. Scaling .logo itself avoids that:
+   an element's transform enlarges its already-clipped rendered box as one piece, it doesn't
+   get re-clipped by its own overflow. The fallback image still spins on top of that scale. */
+.logo:hover {
+    transform: scale(1.08);
+}
+
+.logo:hover .logo__image {
+    transform: rotate(360deg);
+}
+
+.navbar__clock {
+    display: none;
+    justify-self: center;
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 300;
+    color: var(--color-ink);
+    transition: opacity 0.4s ease;
+}
+
+/* fades out with the rest of the bar when the nav goes glass; it keeps its place in the
+   grid so the nav block never shifts */
+.navbar.is-minimal .navbar__clock {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (min-width: 900px) {
+    .navbar__clock {
+        display: block;
+    }
+}
+
+.navbar.is-minimal .logo {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    pointer-events: none;
+}
+
+.navbar__controls {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+}
+
+/* Navbar — aligns to the page's own 16-column grid instead of the default auto/1fr columns,
+   site-wide: logo (or the About page's .navbar__name, which replaces it there) in 1-4, an
+   empty placeholder in 5-8, the clock in 9-12, and the nav links in 13-16. */
+.navbar__filler {
+    display: none;
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 300;
+    color: var(--color-ink);
+    transition: opacity 0.4s ease;
+}
+
+/* fades out with the rest of the bar when the nav goes glass; it keeps its place in the
+   grid so nothing else shifts */
+.navbar.is-minimal .navbar__filler {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (min-width: 1056px) {
+    .navbar__inner {
+        display: grid;
+        grid-template-columns: repeat(16, 1fr);
+        column-gap: var(--page-gutter);
+        max-width: 1584px;
+        margin: 0 auto;
+        padding-left: var(--page-margin);
+        padding-right: var(--page-margin);
+    }
+
+    .logo,
+    .navbar__name {
+        grid-column: 1 / 5;
+    }
+
+    .navbar__filler {
+        display: block;
+        grid-column: 5 / 9;
+    }
+
+    .navbar__clock {
+        grid-column: 9 / 13;
+        justify-self: start;
+    }
+
+    .navbar__controls {
+        grid-column: 13 / -1;
+        justify-self: stretch;
+    }
+
+    .nav-block {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+.nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-02);
+    transition: transform 0.4s ease;
+}
+
+/* Nav block — unified horizontal navigation, replaces the individual nav pills */
+.nav-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    min-height: 48px;
+    padding: var(--pill-padding);
+    box-sizing: border-box;
+    background: var(--color-gray-10);
+    border-radius: 999px;
+    transition: background-color 0.4s ease, border-radius 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* glassmorphism state — white/gray glass, matching the old nav-pill treatment */
+.navbar.is-minimal .nav-block {
+    background: rgba(237, 237, 237, 0.5);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+}
+
+.nav-block__item {
+    display: block;
+    font-family: var(--font-primary);
+    font-weight: 400;
+    color: var(--color-ink);
+    text-decoration: none;
+}
+
+/* hovering any item turns the whole block the hover color, not just that item — the same
+   color "Check out projects" takes. The text is pinned dark so it reads on it on every page,
+   dark pages included, and the glass state takes the same solid fill. */
+.nav-block:has(.nav-block__item:hover),
+.navbar.is-minimal .nav-block:has(.nav-block__item:hover) {
+    background-color: var(--color-hover);
+}
+
+.navbar.is-minimal .nav-block:has(.nav-block__item:hover) {
+    border-color: transparent;
+}
+
+.nav-block__item.is-current {
+    font-weight: 600;
+}
+
+.nav-block:has(.nav-block__item:hover) .nav-block__item-text {
+    color: #0f0f0f;
+}
+
+.nav-block__item-label {
+    display: block;
+    height: 16px;
+    overflow: hidden;
+    line-height: 16px;
+}
+
+.nav-block__item-label-inner {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease;
+}
+
+.nav-block__item:hover .nav-block__item-label-inner {
+    transform: translateY(-16px);
+}
+
+.nav-block__item-text {
+    display: block;
+    height: 16px;
+    line-height: 16px;
+    color: var(--color-ink);
+    transition: color 0.25s ease;
+}
+
+.clock {
+    font-family: var(--font-primary);
+    font-weight: 300;
+    color: #757575;
+    letter-spacing: 0.02em;
+    transition: opacity 0.4s ease;
+}
+
+.navbar.is-minimal .clock {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* clock stays in flow (just invisible) so justify-content never has to change — that jump can't be
+   transitioned. Instead the pills slide up over it via transform, which animates smoothly. */
+.navbar.is-minimal .nav-pills {
+    transform: translateY(-24px);
+}
+
+.nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pill-gap);
+    padding: var(--pill-padding);
+    font-family: var(--font-primary);
+    font-weight: 400;
+    color: var(--color-ink);
+    text-decoration: none;
+    background: var(--color-line);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+.navbar.is-minimal .nav-pill {
+    position: relative;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+/* glass material lives on ::before so it doesn't trap the text/icon's blend-mode inside its own
+   backdrop-filter stacking context (that isolation was washing the text out to plain white) */
+.navbar.is-minimal .nav-pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background-color: rgba(237, 237, 237, 0.5);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.navbar.is-minimal .nav-pill__icon,
+.navbar.is-minimal .nav-pill__label-text {
+    position: relative;
+    color: var(--color-ink);
+}
+
+/* on hover, drop the glass entirely and match the hero section's solid-color hover exactly */
+.navbar.is-minimal .nav-pill:hover::before {
+    opacity: 0;
+}
+
+.navbar.is-minimal .nav-pill:hover .nav-pill__icon,
+.navbar.is-minimal .nav-pill:hover .nav-pill__label-text {
+    color: var(--color-ink);
+    mix-blend-mode: normal;
+}
+
+.navbar.is-minimal .nav-pill--blue:hover {
+    background-color: var(--color-blue);
+}
+
+.navbar.is-minimal .nav-pill--pink:hover {
+    background-color: var(--color-pink);
+}
+
+.navbar.is-minimal .nav-pill--yellow:hover {
+    background-color: var(--color-yellow);
+}
+
+/* the current-page pill skips the glass treatment entirely and stays solid black */
+.navbar.is-minimal .nav-pill.is-current {
+    background-color: var(--color-ink);
+}
+
+.navbar.is-minimal .nav-pill.is-current::before {
+    opacity: 0;
+}
+
+.navbar.is-minimal .nav-pill.is-current .nav-pill__icon,
+.navbar.is-minimal .nav-pill.is-current .nav-pill__label-text {
+    color: #fff;
+}
+
+.nav-pill--blue:hover {
+    background-color: var(--color-blue);
+}
+
+.nav-pill--pink:hover {
+    background-color: var(--color-pink);
+}
+
+.nav-pill--yellow:hover {
+    background-color: var(--color-yellow);
+}
+
+/* the current-page pill is black by default; on hover it drops the black and shows its own brand-color hover like any other pill */
+.nav-pill.is-current {
+    color: #fff;
+    background-color: var(--color-ink);
+}
+
+.nav-pill.is-current .nav-pill__icon {
+    color: #fff;
+}
+
+.nav-pill.is-current:hover {
+    color: var(--color-ink);
+}
+
+.nav-pill.is-current:hover .nav-pill__icon {
+    color: var(--color-ink);
+}
+
+/* higher specificity than the always-on black background so brand-color hover actually wins */
+.nav-pill--blue.is-current:hover {
+    background-color: var(--color-blue);
+}
+
+.nav-pill--pink.is-current:hover {
+    background-color: var(--color-pink);
+}
+
+.nav-pill--yellow.is-current:hover {
+    background-color: var(--color-yellow);
+}
+
+.nav-pill__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--spacing-05);
+    line-height: 1;
+    color: var(--color-ink);
+}
+
+.nav-pill__label {
+    display: inline-block;
+    height: var(--spacing-05);
+    overflow: hidden;
+    line-height: var(--spacing-05);
+}
+
+.nav-pill__label-inner {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease;
+}
+
+.nav-pill:hover .nav-pill__label-inner {
+    transform: translateY(calc(var(--spacing-05) * -1));
+}
+
+.nav-pill__label-text {
+    height: var(--spacing-05);
+    line-height: var(--spacing-05);
+}
+
+
+/* Hero */
+.hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding-top: var(--spacing-09);
+    padding-bottom: var(--spacing-12);
+}
+
+.hero__inner > * {
+    margin-top: 12px;
+}
+
+.hero__inner > *:first-child {
+    margin-top: 0;
+}
+
+@media (min-width: 1056px) {
+    .hero__inner {
+        grid-template-columns: repeat(16, 1fr);
+        column-gap: var(--page-gutter);
+        min-height: 72vh;
+        align-content: start;
+    }
+
+    .hero__inner > * {
+        margin-top: 0;
+    }
+
+    /* column-only placement — no grid-row needed, each item's range overlaps the
+       previous one so auto-placement naturally stacks them into separate rows */
+    .hero__name { grid-column: 1 / 4; }
+    .hero__divider:nth-of-type(1) { grid-column: 1 / 4; margin-top: 12px; }
+    .hero__description { grid-column: 1 / 4; margin-top: 12px; }
+    .hero__divider:nth-of-type(2) { grid-column: 1 / 4; margin-top: 12px; }
+    .hero__list-col { grid-column: 1 / 4; margin-top: 12px; }
+
+    /* absolutely positioned so its own (much taller) height never inflates the
+       auto row tracks that the left column's text sits in */
+    .hero__visual {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        grid-column: 5 / 17;
+    }
+}
+
+/* Hero banner — plain content, no background media. Headline on the left, copy/list/button
+   in a narrow column on the right (desktop: columns 1–12 and 13–16 of the page's 16-col
+   grid); below that a hairline, then a wide 3:1 image. Section padding-bottom already equals
+   --spacing-12 (96px) at desktop, so the gap down to the Work section's own divider needs no
+   extra rule here. */
+.hero--banner {
+    padding-top: var(--section-pad-top);
+    padding-bottom: var(--section-pad-bottom);
+}
+
+.hero-banner-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: var(--page-gutter);
+    row-gap: var(--spacing-06);
+}
+
+.hero-banner__headline {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-family: var(--font-display);
+    /* Flat 40px below desktop — the old clamp(32, 6vw, 64) scaled continuously across mobile
+       and tablet widths, so the same headline read anywhere from 32-53px depending on the
+       device. Desktop (1056px+) keeps the original clamp, restored below. */
+    font-size: var(--type-40);
+    line-height: 1.1;
+    font-weight: var(--font-display-weight);
+    color: var(--color-ink);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.hero-banner__side {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-05);
+}
+
+.hero-banner__copy {
+    margin: 0;
+    font-family: var(--font-primary);
+    font-size: var(--type-28);
+    line-height: 1.5;
+    font-weight: 300;
+    color: var(--color-ink);
+}
+
+.hero__prompt {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pill-gap);
+    width: fit-content;
+    padding: var(--pill-padding);
+    background: var(--color-ink);
+    border-radius: 999px;
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 400;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.4s ease;
+}
+
+/* .hero-banner__side's flex gap already supplies --spacing-05 (16px) between every child;
+   this tops up the copy-to-button gap to a full 32px (--spacing-07). */
+.hero-banner__copy + .hero__prompt {
+    margin-top: calc(var(--spacing-07) - var(--spacing-05));
+}
+
+.hero-banner__divider {
+    margin-top: var(--spacing-12);
+    height: 1px;
+    background: var(--color-line);
+}
+
+.hero-banner__media {
+    margin-top: var(--spacing-09);
+}
+
+.hero-banner__image {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-media);
+}
+
+/* V6 — the image and copy sit side by side below the headline: image spans columns 1-12,
+   copy takes the remaining 13-16. Stacks full-width on mobile/tablet, same as
+   .hero-banner__side does for the headline row. */
+.hero-banner__split {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: var(--spacing-06);
+    margin-top: var(--spacing-09);
+}
+
+/* Below desktop the headline above this sits at a flat 40px, so the gap down to this block
+   (the headline's only margin) is fixed at 32px too instead of the 48px desktop spacing. */
+@media (max-width: 1055px) {
+    .hero-banner__split {
+        margin-top: var(--spacing-07);
+    }
+}
+
+/* Tablet: the copy narrows to the left half (1-4 of 8) instead of stretching full width;
+   media and arrow stay full-width, each on their own row, same stacking order as mobile. */
+@media (min-width: 672px) and (max-width: 1055px) {
+    .hero-banner__split {
+        grid-template-columns: repeat(8, 1fr);
+        column-gap: var(--page-gutter);
+    }
+
+    .hero-banner__split-media {
+        grid-column: 1 / 9;
+    }
+
+    .hero-banner__split-copy {
+        grid-column: 1 / 5;
+    }
+
+    .hero-banner__split-arrow {
+        grid-column: 1 / 9;
+    }
+}
+
+@media (min-width: 1056px) {
+    .hero-banner__split {
+        grid-template-columns: repeat(16, 1fr);
+        column-gap: var(--page-gutter);
+        align-items: start;
+    }
+
+    .hero-banner__split-media {
+        grid-column: 1 / 13;
+    }
+
+    .hero-banner__split-copy {
+        grid-column: 13 / -1;
+        grid-row: 1;
+    }
+
+    /* V6 — the arrow shares the copy's cell (col 13-16, row 1) rather than auto-flowing to a
+       new row below everything: copy stays top-aligned as before, the arrow is pinned to the
+       bottom of that same row so it lines up with the image's bottom edge regardless of how
+       much empty space the shorter copy leaves above it. Both need an explicit grid-row here —
+       without one on the copy, the arrow's explicit row:1 placement (resolved first, since
+       fully-explicit items place before column-only ones) would claim the cell and push the
+       auto-placed copy down to row 2 instead. */
+    .hero-banner__split-arrow {
+        grid-column: 13 / -1;
+        grid-row: 1;
+        align-self: end;
+        justify-self: stretch;
+    }
+}
+
+.hero-banner__split-copy {
+    font-size: var(--type-16);
+}
+
+.hero-banner__split-arrow {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    transition: transform 0.25s ease;
+}
+
+.hero-banner__split-arrow:hover {
+    transform: scale(1.03);
+}
+
+/* Mobile only (4-column grid) — the arrow sits in columns 1-2 instead of stretching full-width */
+@media (max-width: 671px) {
+    .hero-banner__split-arrow {
+        /* 1 of the mobile grid's 4 columns */
+        width: calc(25% - 3 * var(--page-gutter) / 4);
+        justify-self: start;
+    }
+}
+
+/* Tablet (8-column grid) — columns 1-4, i.e. exactly half the grid */
+@media (min-width: 672px) and (max-width: 1055px) {
+    .hero-banner__split-arrow {
+        width: calc(50% - var(--page-gutter) / 2);
+        justify-self: start;
+    }
+}
+
+.hero-banner__split-arrow-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Plays once, triggered by scroll-bounce.js the instant the arrow crosses the viewport's
+   vertical centre: down, up, down, up, then rest — not a looping/hover animation. */
+.hero-banner__split-arrow.is-bouncing {
+    animation: split-arrow-bounce 1.2s ease-in-out 1;
+}
+
+@keyframes split-arrow-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    25% {
+        transform: translateY(14px);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    75% {
+        transform: translateY(14px);
+    }
+}
+
+/* V5's own divider before the mosaic grid: reuses .hero-banner__divider's 96px-above spacing
+   as-is, and adds the 48px gap below it that the mosaic needs before it starts. */
+.hero-banner__divider--v5 {
+    margin-bottom: var(--spacing-09);
+}
+
+@media (min-width: 672px) {
+    .hero-banner-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+}
+
+@media (min-width: 1056px) {
+    .hero-banner-grid {
+        grid-template-columns: repeat(16, 1fr);
+        align-items: start;
+    }
+
+    .hero-banner__headline {
+        grid-column: 1 / 9;
+        grid-row: 1;
+        font-size: clamp(var(--type-32), 6vw, var(--type-64));
+    }
+
+
+    /* Lines up with the left edge of the description column on project pages
+       (.project-facts__description) — .project-content now starts exactly on page column 5,
+       so its own true 12-column .project-facts split lands the description's start on page
+       column 11 exactly, an integer line this grid can express directly. */
+    .hero-banner__side {
+        grid-column: 11 / -1;
+        grid-row: 1;
+    }
+
+    /* V1 fits the hero's own columns 13-16 instead of the cross-page description-column
+       alignment above. */
+    [data-version="v1-only"] .hero-banner__side {
+        grid-column: 13 / -1;
+        margin-left: 0;
+    }
+}
+
+.hero__prompt__text,
+.hero__prompt .hero__prompt__icon {
+    color: #fff;
+}
+
+.hero__prompt__label {
+    display: block;
+    height: var(--spacing-05);
+    overflow: hidden;
+    line-height: var(--spacing-05);
+}
+
+.hero__prompt__label-inner {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease;
+}
+
+.hero__prompt:hover .hero__prompt__label-inner {
+    transform: translateY(calc(var(--spacing-05) * -1));
+}
+
+/* hover flips black-on-white to the hover color with dark text/icon */
+.hero__prompt:hover {
+    background-color: var(--color-hover);
+}
+
+.hero__prompt:hover .hero__prompt__text,
+.hero__prompt:hover .hero__prompt__icon {
+    color: var(--color-ink);
+}
+
+.hero__prompt__text {
+    display: block;
+    height: var(--spacing-05);
+    line-height: var(--spacing-05);
+}
+
+.hero__prompt__text,
+.hero__prompt__icon {
+    transition: color 0.25s ease;
+}
+
+.hero__prompt__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--spacing-05);
+    line-height: 1;
+}
+
+.hero__divider {
+    width: 100%;
+    height: 1px;
+    background: var(--color-line);
+}
+
+.hero__name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+.hero__description {
+    margin: 0;
+    margin-top: 12px;
+    font-family: var(--font-primary);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 300;
+    color: var(--color-ink);
+}
+
+.hero__list-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero__list-track {
+    position: relative;
+    padding-left: var(--spacing-05);
+}
+
+.hero__list-dot {
+    position: absolute;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    transition: top 0.4s ease;
+}
+
+.hero__tagline {
+    margin: 0;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.hero__skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-02);
+    margin: var(--spacing-04) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.hero__skills-list-item {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.skills {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-03);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.skills__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tag-gap);
+    line-height: var(--spacing-05);
+    padding: var(--tag-padding);
+    font-size: var(--type-12);
+    font-weight: 300;
+    background: var(--color-green);
+    border-radius: 999px;
+}
+
+.skills__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: calc(var(--spacing-01) / -2);
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--color-ink);
+}
+
+/* Hero visual — outer 6-column reference grid shared by the feature image and its pagination */
+.hero__visual {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: var(--page-gutter);
+    row-gap: 16px;
+    align-content: start;
+}
+
+/* Hero letter — a placeholder "A" mark that cycles as the list carousel advances;
+   real artwork/animation for each state to come later */
+.hero__letter {
+    grid-column: 1 / 7;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 72vh;
+    overflow: visible;
+    background: var(--color-green);
+    border-radius: var(--radius-media);
+}
+
+.hero__letter-a {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: clamp(200px, min(68vh, 28vw), 900px);
+    line-height: 1;
+    font-weight: 400;
+    color: var(--color-ink);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.hero__letter-a.is-active {
+    opacity: 1;
+}
+
+/* Hero slides — a carousel track that slides horizontally between disciplines */
+.hero__slides {
+    grid-column: 1 / 7;
+    overflow: hidden;
+}
+
+.hero__slides-track {
+    display: flex;
+    width: 400%;
+}
+
+.hero__slide {
+    flex: 0 0 25%;
+    width: 25%;
+}
+
+.hero__feature {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--page-gutter);
+}
+
+.hero__feature-main {
+    grid-column: 1 / 7;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--color-green);
+    border-radius: var(--radius-media);
+    overflow: hidden;
+}
+
+.hero__feature-main__media {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero__captions {
+    grid-column: 1 / 4;
+    grid-row: 2;
+    display: grid;
+    margin-top: 4px;
+}
+
+.hero__feature-caption {
+    grid-area: 1 / 1;
+    color: var(--color-ink);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.hero__feature-caption.is-active {
+    opacity: 1;
+}
+
+.hero__feature-caption__name,
+.hero__feature-caption__type {
+    margin: 0;
+}
+
+.hero__feature-caption__name {
+    font-weight: 400;
+}
+
+.hero__feature-caption__type {
+    font-weight: 300;
+}
+
+/* Hero pagination — scroller below the feature image, matching its column span */
+.hero__pagination {
+    grid-column: 4 / 7;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-04);
+}
+
+.hero__pagination-track {
+    position: relative;
+    flex: none;
+    width: 56px;
+    height: 2px;
+    background: var(--color-line);
+    overflow: hidden;
+}
+
+.hero__pagination-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--color-ink);
+}
+
+.hero__pagination-fill.is-filling {
+    transition: width linear;
+}
+
+.hero__pagination-dots {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--spacing-03);
+}
+
+.hero__pagination-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    background: var(--color-line);
+    border: none;
+    border-radius: 999px;
+    cursor: none;
+    transition: background-color 0.25s ease;
+}
+
+.hero__pagination-dot.is-active {
+    background: var(--color-ink);
+}
+
+/* Navbar overlay — floats transparently on top of a full-bleed hero instead of pushing it down */
+.navbar--overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: transparent;
+    border-bottom-color: transparent;
+}
+
+.navbar--overlay .logo,
+.navbar--overlay .navbar__clock,
+.navbar--overlay .clock,
+.navbar--overlay .nav-pill {
+    color: #fff;
+}
+
+.navbar--overlay .nav-pill {
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Full-bleed hero variant — the carousel fills the viewport edge to edge, type overlays on top */
+.hero--fullbleed {
+    border-bottom: none;
+}
+
+.hero--fullbleed .hero__visual {
+    display: block;
+    position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    height: 100vh;
+    min-height: 560px;
+}
+
+.hero--fullbleed .hero__visual::before,
+.hero--fullbleed .hero__visual::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero--fullbleed .hero__visual::before {
+    top: 0;
+    height: 260px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+}
+
+.hero--fullbleed .hero__visual::after {
+    bottom: 0;
+    height: 300px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.hero--fullbleed .hero__slides {
+    position: absolute;
+    inset: 0;
+}
+
+.hero--fullbleed .hero__slides-track {
+    height: 100%;
+}
+
+.hero--fullbleed .hero__slide {
+    height: 100%;
+}
+
+.hero--fullbleed .hero__feature {
+    display: block;
+    height: 100%;
+}
+
+.hero--fullbleed .hero__feature-main {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+}
+
+.hero--fullbleed .hero__feature-main__media {
+    width: 100%;
+    height: 100%;
+}
+
+.hero--fullbleed .hero__overlay-top,
+.hero--fullbleed .hero__overlay-bottom {
+    position: absolute;
+    left: 50%;
+    width: 100%;
+    max-width: 1584px;
+    transform: translateX(-50%);
+    padding: 0 var(--page-margin);
+    box-sizing: border-box;
+    z-index: 2;
+    color: #fff;
+}
+
+.hero--fullbleed .hero__overlay-top {
+    top: 96px;
+}
+
+.hero--fullbleed .hero__tagline,
+.hero--fullbleed .skills__item {
+    color: #fff;
+}
+
+.hero--fullbleed .hero__overlay-bottom {
+    bottom: var(--spacing-08);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--spacing-06);
+}
+
+.hero--fullbleed .hero__pagination {
+    max-width: 320px;
+    flex: 1 1 auto;
+}
+
+.hero--fullbleed .hero__pagination-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.hero--fullbleed .hero__pagination-dot {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.hero--fullbleed .hero__pagination-dot.is-active {
+    background: #fff;
+}
+
+.hero--fullbleed .hero__feature-caption {
+    position: absolute;
+    left: 50%;
+    bottom: var(--spacing-08);
+    width: 100%;
+    max-width: 1584px;
+    transform: translateX(-50%);
+    padding: 0 var(--page-margin);
+    box-sizing: border-box;
+    z-index: 2;
+    margin-top: 0;
+    color: #fff;
+    text-align: right;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.hero--fullbleed .hero__slide.is-active .hero__feature-caption {
+    opacity: 1;
+}
+
+/* Mosaic — the work grid. Mobile: 4 columns, every tile spans 1–4. Tablet: 8 columns,
+   tiles sit in 1–4 or 5–8 (wide tiles take all 8). Desktop: 3 then 4 across. */
+.mosaic {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: start;
+    column-gap: var(--page-gutter);
+    row-gap: var(--section-gap);
+    width: 100%;
+}
+
+.mosaic > .mosaic__tile {
+    grid-column: span 4;
+}
+
+@media (min-width: 672px) {
+    .mosaic {
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .mosaic > .mosaic__tile--wide {
+        grid-column: span 8;
+    }
+}
+
+@media (min-width: 1056px) {
+    .mosaic {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .mosaic > .mosaic__tile {
+        grid-column: span 1;
+    }
+
+    .mosaic > .mosaic__tile--wide {
+        grid-column: span 2;
+    }
+}
+
+@media (min-width: 1312px) {
+    .mosaic {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.mosaic > .mosaic__tile--full {
+    grid-column: 1 / -1;
+}
+
+.mosaic__tile {
+    display: flex;
+    flex-direction: column;
+}
+
+.mosaic__tile-link {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+}
+
+.mosaic__media {
+    position: relative;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+}
+
+.mosaic__tile-link:hover .mosaic__image {
+    transform: scale(1.05);
+    filter: hue-rotate(160deg);
+}
+
+/* the moon video is pure black-and-white, so hue-rotate alone has nothing to grab onto —
+   sepia+saturate first injects color for it to rotate */
+.mosaic__tile-link[href="project-ibm-research.html"]:hover .mosaic__image {
+    filter: sepia(1) saturate(6) hue-rotate(160deg);
+}
+
+.mosaic__tile-link[href="project-docusign.html"]:hover .mosaic__image { filter: hue-rotate(280deg); }
+.mosaic__tile-link[href="project-template.html"]:hover .mosaic__image { filter: hue-rotate(150deg); }
+.mosaic__tile-link[href="project-consensys.html"]:hover .mosaic__image { filter: hue-rotate(240deg); }
+.mosaic__tile-link[href="project-metamask.html"]:hover .mosaic__image { filter: hue-rotate(60deg); }
+.mosaic__tile-link[href="project-sovienty.html"]:hover .mosaic__image { filter: hue-rotate(180deg); }
+.mosaic__tile-link[href="project-student-debt-smarter.html"]:hover .mosaic__image { filter: hue-rotate(45deg); }
+.mosaic__tile-link[href="project-ugly-dried-fruit.html"]:hover .mosaic__image { filter: hue-rotate(110deg); }
+.mosaic__tile-link[href="project-layland.html"]:hover .mosaic__image { filter: hue-rotate(60deg); }
+
+.mosaic__image {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    background: var(--color-line);
+    border-radius: var(--radius-media);
+    transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.mosaic__placeholder {
+    width: 100%;
+    background-color: var(--color-green);
+    border-radius: var(--radius-media);
+}
+
+.ratio-16-9 {
+    aspect-ratio: 16 / 9;
+}
+
+.ratio-9-16 {
+    aspect-ratio: 9 / 16;
+}
+
+.ratio-4-5 {
+    aspect-ratio: 4 / 5;
+}
+
+.ratio-5-4 {
+    aspect-ratio: 5 / 4;
+}
+
+.ratio-1-1 {
+    aspect-ratio: 1 / 1;
+}
+
+.ratio-2-1 {
+    aspect-ratio: 2 / 1;
+}
+
+.ratio-4-3 {
+    aspect-ratio: 4 / 3;
+}
+
+.mosaic__caption-title {
+    margin: var(--spacing-05) 0 0;
+    font-weight: 400;
+    overflow-wrap: anywhere;
+}
+
+.mosaic__caption-media {
+    margin: 0;
+    font-weight: 300;
+}
+
+/* Scroll reveal — [data-reveal] elements (homepage project cards, project-page media) fade
+   and rise into place the first time they cross into the viewport; see scroll-reveal.js. */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Work */
+/* A hairline on each side, so the hero, Projects and the footer sit in the same rhythm: a section's
+   bottom padding, the line, then the next section's top padding (see --section-pad-*). */
+.work {
+    /* jumping here ("Check out projects", the Work link) lands with this section's top line at
+       the very top of the screen: a negative margin cancels the page-wide scroll offset that
+       keeps other anchors clear of the logo bar */
+    scroll-margin-top: calc(var(--scroll-offset) * -1);
+}
+
+.work__inner {
+    padding-top: var(--section-pad-top);
+    padding-bottom: var(--section-pad-bottom);
+}
+
+/* Section/page titles — "Projects" and every project page's title share one size, leading
+   and gap so the same heading never reads differently from page to page. Flat 40px below
+   desktop — the old clamp(40, 5vw, 64) still crept up to ~53px by the top of the tablet range;
+   desktop (1056px+) restores the scaling clamp below. */
+.work__heading,
+.project-title {
+    margin: 0 0 var(--title-gap);
+    font-family: var(--font-display);
+    font-size: var(--type-40);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--color-ink);
+}
+
+/* Page headlines ("Projects" on the homepage, "Playground" on the Playground page) */
+.wave-text__letter {
+    display: inline-block;
+}
+
+/* About */
+.about__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--section-gap);
+    padding-top: var(--section-pad-top);
+    padding-bottom: var(--section-pad-bottom);
+}
+
+/* Tablet: the type column sits in the left half (1-4 of 8), media in the right half. */
+@media (min-width: 672px) {
+    .about__inner {
+        grid-template-columns: repeat(8, 1fr);
+        column-gap: var(--page-gutter);
+        align-items: start;
+    }
+
+    .about__col--left {
+        grid-column: 1 / 5;
+    }
+
+    .about__col--media {
+        grid-column: 5 / 9;
+    }
+}
+
+/* V1, V2, and V3 are each a separate content block: V1 and V3 are unchanged from before, and
+   V2 now also moves Work Tools into the left column, stacked under Background. */
+@media (min-width: 1056px) {
+    .about__inner {
+        grid-template-columns: repeat(16, 1fr);
+        column-gap: var(--page-gutter);
+        align-items: start;
+        /* V2 (below) reorders which column each block sits in without reordering the DOM —
+           sparse packing (the default) only fills forward from wherever the previous item
+           left off, so it won't backtrack into a gap an out-of-order placement opens up
+           earlier in the row; dense packing does. */
+        grid-auto-flow: dense;
+    }
+
+    /* Was 4fr/8fr/4fr, which (via the gap above) happened to use --section-gap instead of
+       --page-gutter between columns — close to the page's 16-column grid, but not quite on
+       it. Explicit column lines put the right block's edge exactly at column 13, matching the
+       navbar/hero/every other section's grid instead of approximating it. */
+    .about__col--left {
+        grid-column: 1 / 5;
+    }
+
+    .about__col--media {
+        grid-column: 5 / 13;
+    }
+
+    .about__col--right {
+        grid-column: 13 / -1;
+    }
+
+    /* All body copy (Background, Work Tools, Featured & Awards, Roles) flows as one
+       continuous column at 1-4 — .about__col--right isn't used in this markup at all, so
+       there's no separate column to reposition. The media fills 9-16. */
+    .about__col--media {
+        grid-column: 9 / -1;
+    }
+}
+
+/* The media frame fills its full grid column (9-16), but the face graphic itself shrinks
+   inside a 48px inset — the inset is painted the same pink as the graphic's own baked-in
+   background (#FF99DD, sampled from about-face.webp/the matching Lottie), so the two read as
+   one continuous pink field with the illustration just sitting smaller within it, not a
+   visible frame. */
+.about__media {
+    box-sizing: border-box;
+    padding: 48px;
+    background: #FF99DD;
+    border-radius: var(--radius-media);
+}
+
+/* .project-video__toggle normally sits --spacing-05 from the image's own true edge — here
+   that edge is 48px inset from what's actually visible (the pink padding is the same color
+   as the graphic, so there's no seam), so without this the button would read as sitting much
+   further from the corner than it does on every other instance of this component. Pulling it
+   out by the padding amount lands it --spacing-05 from the *visible* (outer) edge instead,
+   proportional to everywhere else. */
+.about__media .project-video__toggle {
+    right: calc(var(--spacing-05) - 48px);
+    bottom: calc(var(--spacing-05) - 48px);
+}
+
+.about__col--left,
+.about__col--right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-09);
+}
+
+.about__block p {
+    margin: 0 0 var(--spacing-05);
+    font-weight: 300;
+}
+
+.about__block p:last-child {
+    margin-bottom: 0;
+}
+
+.about__list {
+    margin: 0 0 var(--spacing-05);
+    padding: 0;
+    list-style: none;
+    font-weight: 300;
+}
+
+.about__list:last-child {
+    margin-bottom: 0;
+}
+
+.about__list li {
+    position: relative;
+    /* room for the marker; wrapped lines hang under the text, not the marker */
+    padding-left: var(--spacing-05);
+    /* matches .project-toc's own gap between links */
+    margin-bottom: var(--spacing-04);
+}
+
+/* A small dot instead of the ✴ star, sized to match the Table of Contents' own markers
+   (.project-toc__marker: 6px, fully round) — positioned (not a flex row) so items with inline
+   links keep flowing. Centered against the first line via line-height, not a fixed offset, so
+   it still lines up if the list's font-size ever changes. */
+.about__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    /* centered against the line box (15.6px at this 12px font-size, i.e. 1.3em), then nudged
+       up a couple more px to sit optically centered against the text's glyphs rather than
+       its full line-height box — the line box's extra padding is mostly below the glyphs, so
+       geometric centering alone reads slightly low. */
+    top: calc((1.3em - 6px) / 2 - 2px);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-ink);
+}
+
+.about__list li:last-child {
+    margin-bottom: 0;
+}
+
+.about__link {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.about__media {
+    position: relative;
+    width: 100%;
+}
+
+/* Lottie block — same square, same corner radius as the image it replaces; the animation
+   carries its own background so nothing else is painted behind it */
+.about__media-lottie {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+}
+
+/* every animation is stacked as its own layer; only the active one is visible */
+.about__media-lottie-layer {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+}
+
+.about__media-lottie-layer.is-active {
+    visibility: visible;
+}
+
+.about__media-lottie[role="button"] {
+    cursor: none;
+}
+
+.about__media-lottie[role="button"]:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 4px;
+}
+
+.about__media-lottie svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.about__media-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: var(--radius-media);
+}
+
+.about__play {
+    position: absolute;
+    right: var(--spacing-06);
+    bottom: var(--spacing-06);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pill-gap);
+    padding: var(--pill-padding);
+    font-family: var(--font-primary);
+    font-weight: 400;
+    line-height: var(--spacing-05);
+    color: var(--color-ink);
+    background: var(--color-line);
+    border: none;
+    border-radius: 999px;
+    cursor: none;
+}
+
+.about__play-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-size: var(--spacing-05);
+    background: var(--color-blue);
+    border-radius: 999px;
+}
+
+/* Project template */
+.project {
+    transition: background-color 0.3s ease;
+}
+
+/* Permanent dark theme for select project pages — applied via body.is-dark-page,
+   covers the navbar as well as the project content since it sits above both. */
+body.is-dark-page {
+    --color-ink: #ffffff;
+    --color-line: rgba(255, 255, 255, 0.3);
+    background-color: #000000;
+    color: #ffffff;
+}
+
+body.is-dark-page .navbar {
+    background-color: #000000;
+}
+
+body.is-dark-page .navbar.is-minimal {
+    background-color: transparent;
+    border-bottom-color: transparent;
+}
+
+body.is-dark-page .site-footer,
+body.is-dark-page .site-footer__sketch {
+    background: #000000;
+    color: #ffffff;
+}
+
+/* icons/pills that sit on a fixed-color chip or a solid ink fill still need dark ink for contrast */
+body.is-dark-page .project-pagination__link,
+body.is-dark-page .project-version-toggle__option,
+body.is-dark-page .nav-pill.is-current,
+body.is-dark-page .nav-pill.is-current .nav-pill__icon,
+body.is-dark-page .navbar.is-minimal .nav-pill__icon,
+body.is-dark-page .navbar.is-minimal .nav-pill__label-text,
+body.is-dark-page .project-tags__item,
+body.is-dark-page .project-tags__icon,
+body.is-dark-page .nav-block__item,
+body.is-dark-page .nav-block__item-text,
+body.is-dark-page .mobile-toc-menu__button,
+body.is-dark-page .mobile-toc-menu__link {
+    color: #0f0f0f;
+}
+
+/* .project-pagination__link's background is --color-line, which on dark pages resolves to a
+   translucent white over black — dark enough that the dark ink text above becomes nearly
+   invisible. A solid white background keeps that same dark-ink text readable. */
+body.is-dark-page .project-pagination__link {
+    background: #ffffff;
+}
+
+/* the solid white override above outranks the shared :hover rule's specificity, which would
+   otherwise suppress it on dark pages — restate the same yellow hover from light pages here */
+body.is-dark-page .project-pagination__link:hover {
+    background: var(--color-yellow);
+}
+
+.project__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: var(--spacing-09);
+    padding-top: var(--section-pad-top);
+    padding-bottom: var(--section-pad-bottom);
+}
+
+@media (min-width: 1056px) {
+    /* 4fr/12fr reproduces the exact same column math as the page's own repeat(16, 1fr) grid
+       with the sidebar spanning columns 1-4 and content spanning 5-16 exactly — a true
+       repeat(16, 1fr) grid with named column-line placement, so it's pixel-perfect against
+       every other grid-aligned section on the page. Trade-off: unlike the previous fr-ratio
+       trick, grid-column isn't animatable, so the sidebar collapse (below) now snaps instead
+       of transitioning smoothly. */
+    .project__inner {
+        grid-template-columns: repeat(16, 1fr);
+        column-gap: var(--page-gutter);
+        align-items: start;
+    }
+
+    .project-sidebar {
+        grid-column: 1 / 5;
+    }
+
+    .project-content {
+        grid-column: 5 / -1;
+    }
+
+    .project__inner--no-sidebar .project-content {
+        grid-column: 1 / -1;
+    }
+
+    /* project-content spans 12 of the page's 16 grid columns (11 gaps of --page-gutter
+       between them) — this caps the title to 8 of those same columns (7 gaps) */
+    .project-title {
+        max-width: calc((100% - 352px) * 8 / 12 + 224px);
+    }
+
+    .work__heading,
+    .project-title {
+        font-size: clamp(var(--type-40), 5vw, var(--type-64));
+    }
+
+    /* Collapsed — leaves just enough width for the heading row's arrow button; content
+       expands to fill the rest. */
+    .project__inner:has(.project-sidebar.is-collapsed) .project-sidebar {
+        grid-column: 1 / 2;
+    }
+
+    .project__inner:has(.project-sidebar.is-collapsed) .project-content {
+        grid-column: 2 / -1;
+    }
+}
+
+.project-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-09);
+}
+
+@media (min-width: 1056px) {
+    .project-sidebar {
+        position: sticky;
+        /* starts level with the project title (which sits one navbar-height plus the section
+           padding down; 1px of slack so it never sticks before its natural spot), then stays
+           there while the solid navbar is up */
+        top: calc(var(--navbar-height) + var(--section-pad-top) - 1px);
+        padding-top: 0;
+        padding-right: var(--spacing-06);
+        border-right: 1px solid var(--color-line);
+        transition: top 0.4s ease, padding-top 0.4s ease;
+    }
+
+    /* once the nav goes glass its block sits at the navbar's top padding (24px), and its
+       text a 1px glass border + 12px pill padding below that — follow suit so the Table of
+       Contents label shares a line with "Work" */
+    .navbar.is-minimal ~ main .project-sidebar {
+        top: calc(var(--spacing-06) + 1px + var(--spacing-04));
+        padding-top: 0;
+    }
+
+    .navbar.is-minimal ~ main .project-sidebar__heading-row {
+        margin-top: 0;
+    }
+
+    /* Collapse toggle (project-sidebar-toggle.js) — desktop only, the arrow sits on the same
+       row as the Table of Contents heading, pushed to the row's far end. Collapsing hides the
+       nav links and the heading label, narrows the sidebar's grid track to a slim rail for
+       just the arrow, and .project-content expands to fill the reclaimed width — all driven
+       by the grid-template-columns transition above, so the whole thing animates as one
+       smooth motion rather than the arrow alone. */
+    .project-sidebar__heading-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-03);
+        /* Elizeth Condensed's cap-height sits noticeably higher in its line box than Nimbus
+           Sans L's does, so the 12px "Table of Contents" label needed pulling up to keep its
+           cap-line level with the 64px project title beside it (measured against the title's
+           own tight glyph bounds) — then nudged back down 20px from that aligned position. */
+        margin: 10.5px 0 var(--spacing-05);
+    }
+
+    .project-sidebar__heading-row .project-sidebar__heading {
+        margin: 0;
+    }
+
+    /* once the heading hides, the arrow is the row's only flex child — space-between has
+       nothing to distribute space between with just one item, so it collapses to flex-start
+       instead of keeping the arrow at the row's end. flex-end keeps it pinned to the same
+       edge (and the same --spacing-06/24px from the sidebar's vertical line, via the
+       unchanged padding-right above) in both states, rather than jumping to wherever
+       "centered in the narrowed rail" happens to land. */
+    .project-sidebar.is-collapsed .project-sidebar__heading-row {
+        justify-content: flex-end;
+    }
+
+    .project-sidebar__toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        outline: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        color: var(--color-ink);
+        cursor: none;
+    }
+
+    .project-sidebar__toggle .material-symbols-outlined {
+        font-size: 18px;
+        transition: transform 0.4s ease;
+    }
+
+    .project-sidebar.is-collapsed .project-sidebar__toggle .material-symbols-outlined {
+        transform: rotate(180deg);
+    }
+
+    .project-sidebar.is-collapsed .project-sidebar__heading,
+    .project-sidebar.is-collapsed .project-toc {
+        display: none;
+    }
+}
+
+@media (max-width: 1055px) {
+    /* the collapse toggle is a desktop-only affordance — below the sidebar breakpoint the
+       Table of Contents already collapses into its own rail (see .project-toc below). This
+       targeted .project-sidebar__collapse, a class that doesn't exist anywhere in the markup
+       (the real button is .project-sidebar__toggle) — so the rule never actually matched and
+       the arrow stayed visible (and non-functional, since .project-sidebar is position:fixed
+       at this width) on mobile. */
+    .project-sidebar__toggle {
+        display: none;
+    }
+}
+
+/* The sidebar label uses the same 16px line box as the nav text, so when the two share a top
+   edge (glass state) their baselines coincide exactly */
+.project-sidebar__heading {
+    line-height: var(--spacing-05);
+}
+
+/* Label headings — sidebar headings stay small */
+.project-sidebar__heading {
+    margin: 0 0 var(--spacing-05);
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+/* About page section headings ("Background", "Work Tools", etc.) — same treatment as the
+   project-page section headings, just 16px instead of the sidebar's 12px. */
+.about__heading {
+    margin: 0 0 var(--spacing-05);
+    font-family: var(--font-primary);
+    font-size: var(--type-16);
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+/* Project page section headings — these live in the content column (not the sidebar), and
+   per-project the title itself is the only other size in that column, so this is its own
+   17px rule rather than sharing the sidebar/about 13px above. */
+.project-section__heading {
+    margin: 0 0 var(--spacing-05);
+    font-family: var(--font-primary);
+    font-size: 17px;
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+.project-sidebar__text {
+    margin: 0;
+    font-weight: 300;
+}
+
+.project-tags {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-03);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.project-tags__item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tag-gap);
+    line-height: var(--spacing-05);
+    padding: var(--tag-padding);
+    font-size: var(--type-12);
+    font-weight: 300;
+    background: var(--color-hover-green);
+    border-radius: 999px;
+}
+
+.project-tags__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--color-ink);
+    /* Material Symbols glyphs sit low in their own box relative to the label text next to
+       them — a small optical nudge up keeps the two reading as sitting on one line. */
+    transform: translateY(-1px);
+}
+
+
+.project-toc {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-04);
+}
+
+.project-toc__link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-03);
+    color: var(--color-ink);
+    text-decoration: none;
+    font-weight: 300;
+    line-height: 14px;
+}
+
+.project-toc__marker {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-line);
+    transition: background-color 0.25s ease;
+}
+
+.project-toc__link.is-active .project-toc__marker {
+    background: var(--color-ink);
+}
+
+/* The sidebar's own divider (.project-sidebar's border-right, below) only runs as tall as the
+   sidebar's content box, so it stops right after the last TOC link. This extends that same
+   line down the page instead, its bottom end held 48px above the bottom of the viewport.
+   Positioned in JS (project-toc-line.js), which keeps it aligned with the sidebar's right edge
+   and updates its length as the page scrolls or the window resizes; the sidebar's native
+   border is hidden (below) so the one JS-drawn line replaces it rather than the two
+   overlapping. Every project page uses this treatment. */
+.project-toc__line {
+    position: fixed;
+    width: 1px;
+    background: var(--color-line);
+    pointer-events: none;
+    z-index: 1;
+}
+
+@media (min-width: 1056px) {
+    .project-sidebar:has(.project-toc__line) {
+        border-right-color: transparent;
+    }
+
+    /* Flexbox's align-items:center on .project-toc__link already centers this geometrically
+       against the link's line-height box, but that reads slightly low next to the text —
+       same optical-centering nudge as .about__list's dots above. Scoped to this breakpoint
+       only (not the base rule) so it doesn't fight the rail variant's own transform:scale on
+       its active dot below. */
+    .project-toc__marker {
+        transform: translateY(-2px);
+    }
+}
+
+/* Below 1056px there is no sidebar column — the dotted rail that used to pin here is gone,
+   replaced by the glass hamburger button + dropdown (mobile-toc-menu.js/.mobile-toc-menu
+   below), which doesn't live inside .project-sidebar at all. */
+@media (max-width: 1055px) {
+    .project-sidebar {
+        display: none;
+    }
+}
+
+/* Mobile TOC menu — a glass circle button (same visual treatment as .navbar.is-minimal
+   .nav-block: the site's one glassmorphism recipe, reused exactly rather than approximated)
+   that appears in the navbar's top-left corner once it goes glass — the same moment the logo
+   there fades out, so it reads as taking over that spot rather than appearing alongside it.
+   Tapping it opens a dropdown of the page's Table of Contents links. Desktop never sees this:
+   it's built and shown/hidden by mobile-toc-menu.js, which checks both the viewport width and
+   the navbar's glass state. */
+.mobile-toc-menu__button {
+    position: fixed;
+    top: var(--spacing-05);
+    left: var(--page-margin);
+    z-index: 110;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    color: var(--color-ink);
+    background: rgba(237, 237, 237, 0.5);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    cursor: none;
+}
+
+.mobile-toc-menu__button.is-visible {
+    display: flex;
+}
+
+.mobile-toc-menu__button .material-symbols-outlined {
+    font-size: 22px;
+}
+
+.mobile-toc-menu__panel {
+    position: fixed;
+    top: calc(var(--spacing-05) + 48px + var(--spacing-03));
+    left: var(--page-margin);
+    z-index: 110;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    /* 2 of the mobile grid's 4 columns, including the gutter between them */
+    width: calc((100vw - 2 * var(--page-margin)) / 2 - var(--page-gutter) / 2);
+    padding: var(--spacing-03);
+    background: rgba(237, 237, 237, 0.5);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+}
+
+.mobile-toc-menu__panel.is-open {
+    display: flex;
+}
+
+.mobile-toc-menu__link {
+    padding: var(--spacing-03) var(--spacing-04);
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 300;
+    color: var(--color-ink);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-toc-menu__link:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+}
+
+/* 672–1055px runs an 8-column grid, so "2 columns" is a narrower fraction of the viewport
+   than it is on the 4-column mobile grid above */
+@media (min-width: 672px) {
+    .mobile-toc-menu__panel {
+        width: calc((100vw - 2 * var(--page-margin)) / 4 - 3 * var(--page-gutter) / 4);
+    }
+}
+
+.project-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    min-width: 0;
+}
+
+/* .project-intro__text already lives inside .project-facts__description, itself a true
+   half-column grid item — no max-width needed, it already matches the grid. */
+.project-intro__text {
+    margin: 0 0 var(--spacing-09);
+    font-weight: 300;
+}
+
+/* .project-section__text sits directly in .project-section (full content width), so unlike
+   .project-intro__text above it needs an explicit cap to match the same half-column other
+   section content (compare-columns, project-facts__col) sits in — a flat 640px didn't track
+   the actual grid at every width, so this computes the real half-column instead. */
+.project-section__text {
+    max-width: calc(50% - var(--page-gutter) / 2);
+    font-weight: 300;
+}
+
+/* Project facts — a reusable two-column intro block: subheadline/team facts on the
+   left, the full description on the right. Same component on every project page. */
+.project-facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: var(--spacing-07);
+    margin: var(--spacing-07) 0 0;
+}
+
+.project-facts__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-07);
+}
+
+@media (min-width: 672px) {
+    .project-facts {
+        grid-template-columns: repeat(8, 1fr);
+        column-gap: var(--page-gutter);
+    }
+
+    .project-facts__col {
+        grid-column: 1 / 5;
+    }
+
+    .project-facts__description {
+        grid-column: 5 / 9;
+    }
+}
+
+@media (min-width: 1056px) {
+    /* .project-content now starts exactly on page column 5 (see .project__inner above), so a
+       true 12-column nested grid here lines up 1:1 with the page's own columns 5-16 — col/
+       description split at 5-10/11-16 — instead of the old 16-way split, which rescaled across
+       .project-content's narrower box and landed the boundary at a fractional page column. */
+    .project-facts {
+        grid-template-columns: repeat(12, 1fr);
+    }
+
+    .project-facts__col {
+        grid-column: 1 / 7;
+    }
+
+    .project-facts__description {
+        grid-column: 7 / -1;
+    }
+}
+
+.project-facts__item {
+    margin: 0;
+}
+
+/* Sub-headings — facts labels and playground discipline titles share one type treatment,
+   both sitting at 16px with every other right-column headline. */
+.playground-discipline__heading {
+    font-family: var(--font-primary);
+    font-size: var(--type-16);
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+.project-facts__label {
+    margin: 0 0 var(--spacing-05);
+    font-family: var(--font-primary);
+    font-size: var(--type-16);
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+.project-facts__value {
+    margin: 0;
+    font-weight: 300;
+}
+
+.project-facts__tags .project-tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.project-facts__description .project-intro__text:last-child {
+    margin-bottom: 0;
+}
+
+/* Playground discipline blocks — a divider, a logo-sized category heading, and a
+   scrolling carousel row, repeated once per discipline. */
+.playground-discipline {
+    min-width: 0;
+    margin-top: var(--spacing-12);
+}
+
+.playground-discipline:first-child {
+    margin-top: 0;
+}
+
+.playground-discipline__divider {
+    height: 1px;
+    margin: 0 0 var(--spacing-07);
+    background: var(--color-line);
+    border: none;
+}
+
+.playground-discipline__heading {
+    margin: 0 0 var(--spacing-07);
+}
+
+.project-section__group {
+    margin-top: var(--spacing-12);
+}
+
+.project-section__group:first-of-type {
+    margin-top: var(--spacing-07);
+}
+
+.project-section__subheading {
+    margin: 0 0 var(--spacing-05);
+    font-family: var(--font-display);
+    font-size: 17px;
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+/* Side-by-side comparison columns — e.g. Sliced vs Diced packaging */
+.compare-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--page-gutter);
+    margin-top: var(--spacing-07);
+}
+
+.compare-columns__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-06);
+}
+
+@media (max-width: 671px) {
+    .compare-columns {
+        grid-template-columns: 1fr;
+    }
+
+    /* the half-column content it matches (compare-columns, project-facts__col) is full-width
+       below this point too */
+    .project-section__text {
+        max-width: none;
+    }
+}
+
+.project-section__text {
+    margin-bottom: var(--spacing-07);
+}
+
+/* a section/group's trailing paragraph shouldn't add its own bottom margin on top of the
+   96px gap .project-content already puts between sections — same fix as
+   .project-facts__description .project-intro__text:last-child above */
+.project-section__text:last-child {
+    margin-bottom: 0;
+}
+
+.project-media-group__label {
+    margin: 0 0 var(--spacing-04);
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+.project-media-group__label:not(:first-child) {
+    margin-top: var(--spacing-07);
+}
+
+.project-media-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--page-gutter);
+}
+
+.project-media {
+    position: relative;
+}
+
+.project-media--span-1 { grid-column: span 1; }
+
+/* Pixel-art icon grid — crisp scaling + a playful hover pop */
+.project-media-grid--icons .project-media__image {
+    image-rendering: pixelated;
+    transition: transform 0.15s ease;
+}
+
+.project-media-grid--icons .project-media:hover .project-media__image {
+    transform: scale(1.15) rotate(-4deg);
+}
+.project-media--span-2 { grid-column: span 2; }
+.project-media--span-3 { grid-column: span 3; }
+.project-media--span-4 { grid-column: span 4; }
+.project-media--span-6 { grid-column: span 6; }
+
+@media (max-width: 671px) {
+    .project-media-grid > .project-media {
+        grid-column: span 6;
+    }
+}
+
+.project-media__placeholder {
+    width: 100%;
+    background-color: var(--color-green);
+    border-radius: var(--radius-media);
+}
+
+/* Granite Playground — not built yet, so the placeholder reads as a held spot rather than a
+   finished (green) tile: light gray instead, with a permanent "Coming soon" glass label
+   (reuses .project-iframe-overlay's look, just without data-iframe-overlay so it never
+   dismisses). */
+.project-media__placeholder--granite {
+    position: relative;
+    background-color: var(--color-gray-10);
+    border: 1px solid #e8e8e8;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.project-media__image {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-media);
+}
+
+/* Live, interactive embed of an external site (research.ibm.com) — black letterboxing
+   around the actual page like the video previews it sits beside, with the embedded page
+   keeping its own native scroll inside the frame so visitors can scroll/click through it. */
+.project-iframe-frame {
+    position: relative;
+    width: 100%;
+    padding: var(--spacing-07);
+    background: #000;
+    border: 1px solid #e8e8e8;
+    border-radius: var(--radius-media);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.project-iframe-frame__frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: var(--spacing-02);
+    background: #fff;
+}
+
+/* "Test 2" — same live embed, cropped to a 16:9 shell instead of letterboxed: no black
+   background, and the page runs edge to edge horizontally so the shell still reads as full
+   width. A small vertical inset (matching the shell's own corner radius) keeps the iframe's
+   native scrollbar clear of the top/bottom curves instead of being cut by them — any less
+   and the scrollbar's ends get clipped where the corner starts rounding inward. */
+.project-iframe-frame--flush {
+    position: relative;
+    padding: var(--radius-media) 0;
+    background: transparent;
+    overflow: hidden;
+}
+
+.project-iframe-frame--flush .project-iframe-frame__frame {
+    border-radius: 0;
+}
+
+/* Glass cover over the live embed — shown before the visitor has chosen to interact with
+   someone else's site. Dismissing it (project-iframe-overlay.js) fades it out and lets
+   clicks/scroll reach the iframe underneath. */
+.project-iframe-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: rgba(237, 237, 237, 0.5);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    border: 0;
+    cursor: none;
+    transition: opacity 0.4s ease;
+}
+
+.project-iframe-overlay__text {
+    font-family: var(--font-primary);
+    font-size: var(--type-20);
+    font-weight: 400;
+    color: var(--color-ink);
+}
+
+.project-iframe-overlay.is-dismissed {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* For white/light-background assets that would otherwise blend into the page */
+.project-media__image--outlined {
+    border: 1px solid var(--color-line);
+}
+
+/* Fluid gradient hero: three blurred, blended blobs cycling between two hex palettes */
+@property --hero-fluid-a {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #d6fb00;
+}
+
+@property --hero-fluid-b {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #c9afff;
+}
+
+@property --hero-fluid-c {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #5d0900;
+}
+
+.hero-fluid {
+    position: relative;
+    overflow: hidden;
+    background: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-fluid__blob {
+    position: absolute;
+    width: 75%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(70px);
+    mix-blend-mode: screen;
+}
+
+.hero-fluid__blob--a {
+    top: -20%;
+    left: -15%;
+    background-color: var(--hero-fluid-a);
+    animation: hero-fluid-drift-a 22s ease-in-out infinite, hero-fluid-color-a 8s ease-in-out infinite;
+}
+
+.hero-fluid__blob--b {
+    top: 15%;
+    right: -20%;
+    background-color: var(--hero-fluid-b);
+    animation: hero-fluid-drift-b 27s ease-in-out infinite, hero-fluid-color-b 8s ease-in-out infinite;
+}
+
+.hero-fluid__blob--c {
+    bottom: -25%;
+    left: 20%;
+    background-color: var(--hero-fluid-c);
+    animation: hero-fluid-drift-c 19s ease-in-out infinite, hero-fluid-color-c 8s ease-in-out infinite;
+}
+
+@keyframes hero-fluid-color-a {
+    0%, 100% { --hero-fluid-a: #d6fb00; }
+    50% { --hero-fluid-a: #27ee36; }
+}
+
+@keyframes hero-fluid-color-b {
+    0%, 100% { --hero-fluid-b: #c9afff; }
+    50% { --hero-fluid-b: #a7b9ff; }
+}
+
+@keyframes hero-fluid-color-c {
+    0%, 100% { --hero-fluid-c: #5d0900; }
+    50% { --hero-fluid-c: #003139; }
+}
+
+@keyframes hero-fluid-drift-a {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(18%, 22%) scale(1.15); }
+}
+
+@keyframes hero-fluid-drift-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-22%, 18%) scale(1.1); }
+}
+
+@keyframes hero-fluid-drift-c {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(12%, -22%) scale(1.2); }
+}
+
+.hero-fluid__logo {
+    position: relative;
+    z-index: 1;
+    width: 32%;
+    max-width: 320px;
+    filter: brightness(0) invert(1);
+    mix-blend-mode: difference;
+}
+
+/* Poster showcase — a 2-column grid of poster mockups on a black backdrop */
+/* display:flex (default align-items:stretch) lets a fixed-aspect-ratio instance
+   (.ratio-16-9) stretch .asset-belt to its own content height, which .asset-belt__track and
+   .asset-belt__item--square below pass down via height:100% — without that chain, a square
+   item has no definite height to size its own aspect-ratio against. An instance without a
+   forced aspect-ratio (the posters carousel) has indeterminate height instead, so stretch is
+   a no-op there and sizing stays exactly as before. */
+.poster-showcase {
+    display: flex;
+    overflow: hidden;
+    background: #000;
+    padding: var(--spacing-05);
+    border-radius: var(--radius-media);
+}
+
+.poster-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-05);
+}
+
+@media (min-width: 672px) {
+    .poster-showcase {
+        padding: var(--spacing-07);
+    }
+
+    .poster-showcase__grid {
+        gap: var(--spacing-07);
+    }
+}
+
+@media (min-width: 1056px) {
+    .poster-showcase {
+        padding: 64px var(--spacing-09);
+    }
+
+    .poster-showcase__grid {
+        gap: var(--spacing-09);
+    }
+}
+
+.poster-showcase__image--wide {
+    grid-column: span 2;
+}
+
+.poster-showcase__flat {
+    border-radius: 0;
+}
+
+/* Color belt — a looping strip of color tiles, replaces heavy pre-rendered GIFs with pure CSS */
+.color-belt {
+    container-type: inline-size;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1000 / 77;
+    overflow: hidden;
+}
+
+.color-belt__track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    animation-name: color-belt-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.color-belt__tile {
+    display: block;
+    flex: 0 0 auto;
+    width: calc(100cqw / 12);
+    height: 100%;
+}
+
+@keyframes color-belt-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+.color-belt--monochromatic .color-belt__track { animation-duration: 30s; }
+.color-belt--acid .color-belt__track { animation-duration: 20s; }
+.color-belt--neon .color-belt__track { animation-duration: 15s; }
+
+/* Asset belt — a looping strip of project images/tiles, same seamless-scroll technique
+   as the color belt, but with spacing between items since these are full images. */
+.asset-belt {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.asset-belt--spaced {
+    margin-top: var(--spacing-07);
+}
+
+.asset-belt--seamless .asset-belt__track {
+    gap: 0;
+}
+
+.asset-belt__track {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    height: 100%;
+    gap: var(--spacing-06);
+    animation: asset-belt-scroll 24s linear infinite;
+}
+
+.asset-belt__item {
+    display: block;
+    flex: 0 0 auto;
+    width: 320px;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Sized by height, not width — keeps each tile's native 1:1 artwork uncropped inside a
+   16:9 showcase track, instead of the default item's 16:9 crop. Scaled to 70% of the
+   showcase's full height (rather than 100%) per request, so .asset-belt__track centers it
+   instead of the default stretch (which would otherwise pin it to the top). */
+.asset-belt__item--square {
+    width: auto;
+    height: 70%;
+    aspect-ratio: 1 / 1;
+    border-radius: 0;
+}
+
+.asset-belt__item--poster {
+    width: 560px;
+    aspect-ratio: 5400 / 7200;
+    border-radius: 0;
+}
+
+/* Height-driven like --square-fill rather than the default item's width-driven sizing,
+   so width is derived from height here instead. */
+.asset-belt__item--circuit-breaker {
+    width: auto;
+    height: 348px;
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+}
+
+/* Sized by width instead of height — each tile fills the full width of a narrow, portrait
+   container (.asset-belt--vertical) and stacks top to bottom rather than side to side. */
+.asset-belt__item--square-fill {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 0;
+}
+
+/* A belt that scrolls upward through a stacked column instead of sideways through a row —
+   for a portrait-shaped slot where a horizontal belt wouldn't fit. */
+.asset-belt--vertical {
+    height: 100%;
+}
+
+.asset-belt--vertical .asset-belt__track {
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    animation-name: asset-belt-scroll-vertical;
+}
+
+/* Matches the rendered size of the 16:9 Blog Cover Art images elsewhere on this page */
+.asset-belt__item--large {
+    width: auto;
+    height: 344px;
+    aspect-ratio: 16 / 9;
+}
+
+.asset-belt__item--icon {
+    width: 120px;
+    aspect-ratio: 1 / 1;
+    border-radius: 0;
+}
+
+.asset-belt__item--icon img {
+    object-fit: contain;
+}
+
+/* IBM Research rebrand color palette — was one flattened image (native ratio ~12:1 overall,
+   its individual blocks baked in at whatever proportions the original layout happened to
+   produce). Rebuilt as real color swatches instead: the solid blocks snapped to a whole N:1
+   (or 1:N), the light/dark pairs each a 1:1 square per band, and the 9-band rainbow strip
+   a 2:1 rectangle per band. Both clusters are a stack of equal-height bands inside a
+   container whose own ratio is just the sum of its bands', so the container ratio works out
+   to (per-band ratio) : (band count) once stacked. */
+.ibm-palette {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: stretch;
+    height: 120px;
+}
+
+.ibm-palette__swatch {
+    height: 100%;
+}
+
+.ibm-palette__pair {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    aspect-ratio: 1 / 2;
+}
+
+.ibm-palette__strip {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    aspect-ratio: 2 / 9;
+}
+
+.ibm-palette__pair > div,
+.ibm-palette__strip > div {
+    flex: 1;
+}
+
+/* Paged strip — a static row of tiles with prev/next arrows underneath instead of
+   an auto-scrolling belt, so the user can pause and look at each item. */
+.paged-strip {
+    min-width: 0;
+    max-width: 100%;
+    margin-top: var(--spacing-07);
+}
+
+.paged-strip__viewport {
+    overflow: hidden;
+    transition: width 0.4s ease;
+}
+
+.paged-strip__track {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--spacing-06);
+    transition: transform 0.4s ease;
+}
+
+.paged-strip__item {
+    flex: 0 0 auto;
+    height: 344px;
+}
+
+.paged-strip__item img,
+.paged-strip__item video {
+    display: block;
+    height: 100%;
+    width: auto;
+    max-width: none;
+    border-radius: 12px;
+}
+
+.paged-strip__nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-05);
+    margin-top: var(--spacing-06);
+}
+
+.paged-strip__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: var(--color-ink);
+    background: transparent;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    cursor: none;
+    transition: background-color 0.2s ease;
+}
+
+.paged-strip__arrow:hover:not(:disabled) {
+    background: var(--color-line);
+}
+
+.paged-strip__arrow:disabled {
+    opacity: 0.3;
+    cursor: none;
+}
+
+.paged-strip__count {
+    font-family: var(--font-primary);
+    font-size: 12px;
+    color: var(--color-ink);
+}
+
+.asset-belt--slow .asset-belt__track {
+    animation-duration: 45s;
+}
+
+.asset-belt--pace-30 .asset-belt__track {
+    animation-duration: 30s;
+}
+
+.asset-belt--fast .asset-belt__track {
+    animation-duration: 14s;
+}
+
+.asset-belt__item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes asset-belt-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes asset-belt-scroll-vertical {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+}
+
+.project-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-05);
+}
+
+.project-pagination__group {
+    display: flex;
+    gap: var(--spacing-03);
+}
+
+.project-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pill-gap);
+    padding: var(--pill-padding);
+    font-family: var(--font-primary);
+    font-weight: 400;
+    /* same fixed line box as the icon (and as every other pill), so the two centre on
+       each other instead of the label riding high in a taller inherited line-height */
+    line-height: var(--spacing-05);
+    color: var(--color-ink);
+    text-decoration: none;
+    background: var(--color-line);
+    border-radius: 999px;
+    transition: background-color 0.25s ease;
+}
+
+.project-pagination__link:hover {
+    background: var(--color-yellow);
+}
+
+.project-pagination__link .material-symbols-outlined {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Optical alignment: the icon is centred in the pill, but this font seats its capitals ~1.4px
+       above that centre, so a centred icon reads as sitting low. 1px up lands it between the
+       capitals' middle and the lowercase middle. */
+    position: relative;
+    top: -1px;
+    font-size: var(--spacing-05);
+    line-height: 1;
+}
+
+.project-pagination__link--next {
+    margin-left: auto;
+}
+
+/* Footer */
+.site-footer {
+    background: #fff;
+}
+
+.site-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    column-gap: var(--page-gutter);
+    row-gap: var(--spacing-08);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.site-footer__email {
+    grid-column: 1 / 17;
+    min-width: 0;
+    font-family: var(--font-display);
+    font-size: clamp(var(--type-32), 6vw, var(--type-64));
+    color: #fff;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.site-footer__social-group {
+    grid-column: 1 / 17;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: var(--page-gutter);
+}
+
+.site-footer__social {
+    grid-column: span 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: color 0.25s ease;
+}
+
+.site-footer__social svg {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+}
+
+.site-footer__social--instagram:hover {
+    color: var(--color-pink);
+}
+
+.site-footer__social--linkedin:hover {
+    color: var(--color-blue);
+}
+
+/* Footer sketch — "Wanna chat?" + contact links. Mobile: 4 columns, heading then list, both
+   spanning 1–4. Tablet: 8 columns, heading in 1–4 and list in 5–8. Desktop: 16 columns,
+   heading in 1–8 and list in 9–16. Type is sized from each column's own width (cqw) so it
+   shrinks with the column instead of overflowing into its neighbour. */
+.site-footer__sketch {
+    grid-column: 1 / 17;
+    background: #fff;
+    color: #000;
+    padding-top: var(--section-pad-top);
+    padding-bottom: var(--section-pad-bottom);
+}
+
+/* .site-footer__inner already supplies the page margin, so this only lays out columns */
+.site-footer__sketch-inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: var(--page-gutter);
+    row-gap: var(--spacing-07);
+}
+
+.site-footer__sketch-heading-col,
+.site-footer__sketch-list-col {
+    grid-column: 1 / -1;
+    container-type: inline-size;
+    min-width: 0;
+}
+
+.site-footer__sketch-heading {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1;
+    font-size: clamp(var(--type-48), 24cqw, var(--type-96));
+}
+
+/* Bumped one at a time by footer-heading-bump.js the first time this scrolls into view. */
+.site-footer__sketch-heading-word {
+    display: inline-block;
+}
+
+.site-footer__sketch-list-col {
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-05);
+}
+
+.site-footer__sketch-item {
+    display: block;
+    max-width: 100%;
+    color: inherit;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: clamp(var(--type-20), 6.9cqw, var(--type-48));
+    font-weight: 400;
+    line-height: 1;
+    overflow-wrap: anywhere;
+    transform: translateX(0);
+    transition: transform 0.25s ease;
+}
+
+.site-footer__sketch-item:hover {
+    text-decoration: underline;
+    transform: translateX(-8px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-footer__sketch-item {
+        transition: none;
+    }
+}
+
+@media (min-width: 672px) {
+    .site-footer__sketch-inner {
+        grid-template-columns: repeat(8, 1fr);
+        row-gap: var(--spacing-08);
+    }
+
+    .site-footer__sketch-heading-col {
+        grid-column: 1 / 5;
+    }
+
+    .site-footer__sketch-list-col {
+        grid-column: 5 / 9;
+        align-items: flex-end;
+        text-align: right;
+        gap: var(--spacing-06);
+    }
+
+    .site-footer__sketch-heading {
+        font-size: clamp(var(--type-40), 14.6cqw, var(--type-96));
+    }
+}
+
+@media (min-width: 1056px) {
+    .site-footer__sketch-inner {
+        grid-template-columns: repeat(16, 1fr);
+    }
+
+    .site-footer__sketch-heading-col {
+        grid-column: 1 / 9;
+    }
+
+    .site-footer__sketch-list-col {
+        grid-column: 9 / 17;
+        gap: var(--spacing-07);
+    }
+}
+
+/* Hero intro — "Design Portfolio" hook and the five discipline tags, stacked in
+   the narrow column beside the hero carousel */
+.intro-strip__hook {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-04);
+}
+
+.intro-strip__hook-text {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-ink);
+}
+
+.intro-strip__hook-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    color: var(--color-ink);
+}
+
+.category-hook {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-02);
+    margin: 0 0 var(--spacing-05);
+}
+
+.category-hook__text {
+    font-family: var(--font-primary);
+    font-size: var(--type-16);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--color-ink);
+}
+
+.category-hook__icon {
+    display: block;
+    width: 18px;
+    height: 18px;
+    color: var(--color-ink);
+}
+
+.intro-strip__list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.intro-strip__item {
+    font-family: var(--font-primary);
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    color: var(--color-ink);
+    white-space: nowrap;
+}
+
+/* View cursor — a custom circular cursor that appears over project tiles, reading
+   "View", and shrinks on click just before navigating to the project page.
+   The outer element only ever carries the JS-driven position transform; the inner
+   circle carries the CSS-driven scale/opacity so the two never fight over `transform`. */
+.view-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9995;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.view-cursor__circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    margin: -48px 0 0 -48px;
+    border-radius: 50%;
+    background: var(--color-hover);
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.view-cursor.is-active .view-cursor__circle {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.view-cursor.is-active.is-pressed .view-cursor__circle {
+    transform: scale(0.4);
+}
+
+.view-cursor__label {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: #0f0f0f;
+}
+
+/* Caption cursor — a pill that follows the pointer over any [data-hover-caption] photo and
+   types its caption out word by word (see caption-cursor.js), growing to fit as it goes.
+   Same split as .view-cursor: the outer element only ever carries the JS-driven position
+   transform, the pill carries every CSS-driven change (scale, opacity, width) so the two
+   never fight over `transform`. */
+.caption-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9995;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.caption-cursor__pill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: var(--pill-padding);
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: var(--color-hover);
+    white-space: nowrap;
+    overflow: hidden;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+    transition: opacity 0.25s ease, transform 0.25s ease, width 0.2s ease;
+}
+
+.caption-cursor.is-active .caption-cursor__pill {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.caption-cursor__text {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+    white-space: nowrap;
+}
+
+/* Optional preview thumbnail (data-hover-image) — sits 16px below the pill, which is 48px
+   tall and centred on the cursor, hence the 24px (half) + 16px (gap) offset below center. */
+.caption-cursor__image {
+    position: absolute;
+    top: calc(50% + 24px + 16px);
+    left: 50%;
+    width: 309px;
+    display: block;
+    height: auto;
+    border-radius: var(--radius-media);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    transform: translate(-50%, 0) scale(0.95);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.caption-cursor__image[hidden] {
+    display: none;
+}
+
+.caption-cursor.is-active .caption-cursor__image {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .caption-cursor__pill,
+    .caption-cursor__image {
+        transition: none;
+    }
+}
+
+/* Topic hover cursor — a circle that follows the cursor when hovering a discipline
+   in the "Design Portfolio" list, with a playful reaction word in the center.
+   The outer element only ever carries the JS-driven position transform; the inner
+   circle carries the CSS-driven scale/opacity so the two never fight over `transform`. */
+.topic-hover-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9994;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.topic-hover-cursor__circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    margin: -60px 0 0 -60px;
+    border-radius: 50%;
+    background: var(--color-cursor);
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.topic-hover-cursor.is-active .topic-hover-cursor__circle {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.topic-hover-cursor__circle--triangle {
+    border-radius: 0;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.topic-hover-cursor__circle--triangle .topic-hover-cursor__label {
+    transform: translateY(20px);
+}
+
+.topic-hover-cursor__circle--square {
+    border-radius: 0;
+}
+
+.topic-hover-cursor__circle--rectangle {
+    width: 160px;
+    height: 100px;
+    margin: -50px 0 0 -80px;
+    border-radius: 0;
+}
+
+.topic-hover-cursor__circle--diamond {
+    border-radius: 0;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.topic-hover-cursor__circle--green { background: var(--color-green); }
+.topic-hover-cursor__circle--blue { background: var(--color-blue); }
+.topic-hover-cursor__circle--pink { background: var(--color-pink); }
+.topic-hover-cursor__circle--yellow { background: var(--color-yellow); }
+.topic-hover-cursor__circle--orange { background: var(--color-orange); }
+
+.topic-hover-cursor__label {
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    color: #0f0f0f;
+    text-align: center;
+}
+
+/* Cursor dot — replaces the system pointer with a small black dot */
+body {
+    cursor: none;
+}
+
+a,
+button,
+[data-carousel] {
+    cursor: none;
+}
+
+.cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.cursor-dot.is-active {
+    opacity: 1;
+}
+
+body.hide-cursor-dot .cursor-dot {
+    opacity: 0;
+}
+
+/* Pressing H (dev-hotkeys.js) hides every dev tool at once — the toggle bar itself, any open
+   panel, sticky notes, overlays — without touching each tool's own on/off state, so pressing
+   H again brings back exactly what was showing before. */
+body.dev-ui-hidden .dev-toggles,
+body.dev-ui-hidden #grid-overlay,
+body.dev-ui-hidden #tokens-panel,
+body.dev-ui-hidden .notes-toolbar,
+body.dev-ui-hidden .sticky-note,
+body.dev-ui-hidden .reminders-panel,
+body.dev-ui-hidden .reveal-filenames-overlay,
+body.dev-ui-hidden .measure-highlight,
+body.dev-ui-hidden .measure-label,
+body.dev-ui-hidden .measure-distance-line,
+body.dev-ui-hidden .measure-distance-label {
+    display: none;
+}
+
+/* Dev tool toggle buttons */
+.dev-toggles {
+    position: fixed;
+    bottom: var(--spacing-05);
+    right: var(--spacing-05);
+    z-index: 10000;
+    display: flex;
+    gap: var(--spacing-03);
+    cursor: none;
+    touch-action: none;
+}
+
+.dev-toggles.is-dragging {
+    cursor: none;
+}
+
+.dev-toggle {
+    position: relative;
+    padding: var(--spacing-03) var(--spacing-04);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: rgba(15, 15, 15, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    cursor: none;
+}
+
+.dev-toggle:hover {
+    background: rgba(15, 15, 15, 1);
+}
+
+.dev-toggle.is-active {
+    background: #0f62fe;
+    border-color: #0f62fe;
+}
+
+.dev-toggles.is-dragging .dev-toggle {
+    cursor: none;
+}
+
+/* Font dev-toggle's dropdown (font-toggle.js) — lists every headline typeface tried so far
+   instead of just flipping between two. Opens upward since the dev-toggles bar sits at the
+   bottom of the screen. */
+.dev-toggle-font {
+    position: relative;
+}
+
+.dev-toggle-font__menu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + var(--spacing-03));
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--spacing-03);
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    min-width: 170px;
+}
+
+.dev-toggle-font__menu[hidden] {
+    display: none;
+}
+
+.dev-toggle-font__option {
+    padding: var(--spacing-02) var(--spacing-03);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: transparent;
+    border: 0;
+    border-radius: 3px;
+    text-align: left;
+    cursor: none;
+}
+
+.dev-toggle-font__option:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.dev-toggle-font__option.is-active {
+    background: #0f62fe;
+}
+
+/* Inline editor — the "Edit" dev-toggle (03_scripts/inline-editor.js). Hovering an eligible
+   element in edit mode outlines it; clicking makes it editable; saving (or failing to) flashes
+   it green (or red) briefly. Needs dev-tools/edit-server.js running to actually persist. */
+.is-edit-mode [contenteditable] {
+    cursor: text;
+}
+
+.is-edit-hover {
+    outline: 1px dashed var(--color-ink);
+    outline-offset: 2px;
+    cursor: text;
+}
+
+.is-editing-now {
+    outline: 2px solid var(--color-hover-green);
+    outline-offset: 2px;
+    background: color-mix(in srgb, var(--color-hover-green) 15%, transparent);
+}
+
+.is-saving {
+    opacity: 0.6;
+}
+
+.is-saved {
+    outline: 2px solid var(--color-hover-green);
+    outline-offset: 2px;
+    transition: outline-color 0.6s ease;
+}
+
+.is-save-error {
+    outline: 2px solid #ff3b30;
+    outline-offset: 2px;
+}
+
+/* Measure tool — Figma-style inspect: hover shows an element's size, click pins
+   it as a reference so the next hover draws the gap (and flags it if that gap
+   doesn't land on the --spacing-* scale) */
+.measure-highlight {
+    position: fixed;
+    z-index: 10001;
+    display: none;
+    outline: 1px solid #0f62fe;
+    background: rgba(15, 98, 254, 0.08);
+    pointer-events: none;
+}
+
+.measure-highlight--pinned {
+    outline: 1px dashed #ff6f00;
+    background: rgba(255, 111, 0, 0.06);
+}
+
+.measure-label {
+    position: fixed;
+    z-index: 10002;
+    display: none;
+    padding: 2px 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: #0f62fe;
+    border-radius: 3px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.measure-distance-line {
+    position: fixed;
+    z-index: 10001;
+    display: none;
+    background: #ff6f00;
+    pointer-events: none;
+}
+
+.measure-distance-line--x {
+    height: 1px;
+}
+
+.measure-distance-line--y {
+    width: 1px;
+}
+
+.measure-distance-label {
+    position: fixed;
+    z-index: 10002;
+    display: none;
+    padding: 2px 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: #ff6f00;
+    border-radius: 3px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.measure-distance-label.is-off-scale {
+    background: #da1e28;
+}
+
+/* keep the custom cursor dot (never the OS cursor) but tint it while measuring is active */
+body.is-measuring .cursor-dot {
+    background: #0f62fe;
+}
+
+/* Sticky notes dev tool — leave feedback pinned to a spot on the page, then
+   copy everything (across every page) as one block to hand off in chat */
+.sticky-note {
+    position: absolute;
+    z-index: 10003;
+    width: 200px;
+    padding: 20px 8px 8px;
+    background: var(--color-yellow);
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Clicking N hides every sticky note on the page so you can see it without them; clicking
+   N again brings them back. */
+body.notes-hidden .sticky-note {
+    display: none;
+}
+
+.sticky-note__delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: rgba(15, 15, 15, 0.1);
+    border-radius: 50%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    line-height: 1;
+    color: #0f0f0f;
+    cursor: none;
+}
+
+.sticky-note__textarea {
+    display: block;
+    width: 100%;
+    min-height: 60px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    resize: vertical;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    color: #0f0f0f;
+}
+
+.sticky-note__textarea:focus {
+    outline: none;
+}
+
+.notes-toolbar {
+    position: fixed;
+    left: var(--spacing-05);
+    bottom: var(--spacing-05);
+    z-index: 10000;
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: calc(100vw - var(--spacing-07));
+    gap: var(--spacing-03);
+    padding: var(--spacing-03) var(--spacing-04);
+    background: rgba(15, 15, 15, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    color: #fff;
+}
+
+.notes-toolbar.is-active {
+    display: flex;
+}
+
+.notes-toolbar__button {
+    padding: 4px 10px;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 3px;
+    cursor: none;
+}
+
+.notes-toolbar__button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.notes-toolbar__button.is-copied {
+    background: #0f62fe;
+}
+
+/* Two kinds of note — yellow is for Claude (copied out), green is a reminder for the owner
+   (never copied; collected in the Reminders panel) */
+.notes-toolbar__types {
+    display: inline-flex;
+    gap: var(--spacing-02);
+    padding: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 5px;
+}
+
+.notes-toolbar__type {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-02);
+    padding: 3px 8px;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.65);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: none;
+}
+
+.notes-toolbar__type.is-active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.notes-toolbar__swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+.notes-toolbar__type--claude .notes-toolbar__swatch {
+    background: var(--color-yellow);
+}
+
+.notes-toolbar__type--reminder .notes-toolbar__swatch {
+    background: var(--color-green);
+}
+
+.notes-toolbar__button--reminders.is-active {
+    color: #0f0f0f;
+    background: var(--color-green);
+}
+
+.sticky-note--reminder {
+    background: var(--color-green);
+}
+
+.sticky-note__type {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    background: var(--color-yellow);
+    border: 1px solid rgba(15, 15, 15, 0.35);
+    border-radius: 3px;
+    cursor: none;
+}
+
+.sticky-note--reminder .sticky-note__type {
+    background: var(--color-green);
+}
+
+.sticky-note.is-done {
+    opacity: 0.55;
+}
+
+.sticky-note.is-done .sticky-note__textarea {
+    text-decoration: line-through;
+}
+
+.sticky-note.is-flashing {
+    animation: sticky-note-flash 0.55s ease-in-out 4;
+}
+
+@keyframes sticky-note-flash {
+    0%, 100% { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); }
+    50% { box-shadow: 0 0 0 4px #0f62fe, 0 4px 12px rgba(0, 0, 0, 0.25); }
+}
+
+.dev-toggle__badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+    color: #0f0f0f;
+    background: var(--color-green);
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.dev-toggle__badge[hidden] {
+    display: none;
+}
+
+/* Reminders panel — every green note, across pages, grouped by page */
+.reminders-panel {
+    position: fixed;
+    left: var(--spacing-05);
+    bottom: 64px;
+    z-index: 10000;
+    display: none;
+    width: 340px;
+    max-width: calc(100vw - var(--spacing-07));
+    max-height: 60vh;
+    overflow-y: auto;
+    background: rgba(15, 15, 15, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    color: #fff;
+}
+
+.reminders-panel.is-open {
+    display: block;
+}
+
+.reminders-panel__header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-03) var(--spacing-04);
+    background: rgba(15, 15, 15, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.reminders-panel__title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-02);
+    font-weight: 700;
+}
+
+.reminders-panel__title::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--color-green);
+    border-radius: 2px;
+}
+
+.reminders-panel__close,
+.reminders-panel__delete {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    cursor: none;
+}
+
+.reminders-panel__body {
+    padding: var(--spacing-02) var(--spacing-04) var(--spacing-04);
+}
+
+.reminders-panel__empty {
+    margin: var(--spacing-03) 0 0;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+}
+
+.reminders-panel__page {
+    margin: var(--spacing-04) 0 var(--spacing-02);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+}
+
+.reminders-panel__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-03);
+    padding: var(--spacing-02) 0;
+}
+
+.reminders-panel__check {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    padding: 0;
+    font-size: 11px;
+    line-height: 14px;
+    color: #0f0f0f;
+    background: transparent;
+    border: 1.5px solid var(--color-green);
+    border-radius: 3px;
+    cursor: none;
+}
+
+.reminders-panel__item.is-done .reminders-panel__check {
+    background: var(--color-green);
+}
+
+.reminders-panel__text {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: 1.4;
+    color: #fff;
+    text-align: left;
+    background: none;
+    border: none;
+    overflow-wrap: anywhere;
+    cursor: none;
+}
+
+.reminders-panel__text:hover {
+    text-decoration: underline;
+}
+
+.reminders-panel__item.is-done .reminders-panel__text {
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: line-through;
+}
+
+/* Labels every image/video/lottie on the page with its filename when the "R" dev-toggle is active */
+.reveal-filenames-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 9996;
+    pointer-events: none;
+}
+
+.reveal-filenames-label {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    padding: 2px 4px 2px 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 3px;
+}
+
+.reveal-filenames-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.reveal-filenames-copy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    color: #fff;
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    cursor: none;
+    pointer-events: auto;
+}
+
+.reveal-filenames-copy:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.reveal-filenames-copy .material-symbols-outlined {
+    font-size: 12px;
+    line-height: 1;
+}
+
+.reveal-filenames-copy .material-symbols-outlined:last-child {
+    display: none;
+}
+
+.reveal-filenames-copy.is-copied .material-symbols-outlined:first-child {
+    display: none;
+}
+
+.reveal-filenames-copy.is-copied .material-symbols-outlined:last-child {
+    display: block;
+    color: #54fc84;
+}
+
+/* Flags media over the weight threshold when the "Weight" dev-toggle is active */
+.media-weight-flag {
+    display: none;
+    position: absolute;
+    top: var(--spacing-03);
+    right: var(--spacing-03);
+    width: 12px;
+    height: 12px;
+    background: #ff3b30;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    z-index: 5;
+}
+
+body.show-media-weight .media-weight-flag {
+    display: block;
+}
+
+/* Design tokens reference panel — type, spacing, color */
+.tokens-panel {
+    display: none;
+    position: fixed;
+    top: 56px;
+    right: var(--spacing-05);
+    z-index: 10000;
+    width: 320px;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    padding: var(--spacing-03) var(--spacing-05) var(--spacing-05);
+    background: rgba(15, 15, 15, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+}
+
+.tokens-panel.is-active {
+    display: block;
+}
+
+.tokens-panel__handle {
+    height: 16px;
+    margin: calc(var(--spacing-03) * -1) calc(var(--spacing-05) * -1) var(--spacing-03);
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: none;
+    touch-action: none;
+}
+
+.tokens-panel.is-dragging .tokens-panel__handle {
+    cursor: none;
+}
+
+.tokens-panel__section + .tokens-panel__section {
+    margin-top: var(--spacing-06);
+}
+
+.tokens-panel__heading {
+    margin: 0 0 var(--spacing-02);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+}
+
+.tokens-panel__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-04);
+    padding: var(--spacing-03) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tokens-panel__row:last-child {
+    border-bottom: none;
+}
+
+.tokens-panel__label {
+    flex-shrink: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.tokens-panel__sample {
+    overflow: hidden;
+    font-family: var(--font-primary);
+    font-weight: 400;
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Spacing rows: bar width is literally the token's px value, so the scale is visible at a glance */
+.tokens-panel__row--spacing {
+    align-items: center;
+}
+
+.tokens-panel__spacing-bar {
+    flex-shrink: 0;
+    height: 8px;
+    background: var(--color-green);
+    border-radius: 2px;
+}
+
+.tokens-panel__row--color {
+    align-items: center;
+    gap: var(--spacing-03);
+}
+
+.tokens-panel__color-swatch {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tokens-panel__color-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-right: auto;
+}
+
+.tokens-panel__color-name {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.tokens-panel__color-value {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+/* Grid overlay */
+.grid-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.grid-overlay.is-active {
+    display: block;
+}
+
+.grid-overlay__inner {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0 var(--page-margin);
+    gap: var(--page-gutter);
+}
+
+.grid-overlay__col {
+    display: none;
+    flex: 1 1 0;
+    height: 100%;
+    background: rgba(15, 98, 254, 0.08);
+    outline: 1px solid rgba(15, 98, 254, 0.35);
+}
+
+/* mobile — under 672: 4 columns (margin/gutter come from --page-margin/--page-gutter) */
+.grid-overlay__col:nth-child(-n + 4) {
+    display: block;
+}
+
+/* tablet — 672: 8 columns */
+@media (min-width: 672px) {
+    .grid-overlay__col:nth-child(-n + 8) {
+        display: block;
+    }
+}
+
+/* desktop — 1056: 16 columns */
+@media (min-width: 1056px) {
+    .grid-overlay__col:nth-child(-n + 16) {
+        display: block;
+    }
+}
+
+/* max — 1584: container caps and centers */
+@media (min-width: 1584px) {
+    .grid-overlay__inner {
+        max-width: 1584px;
+        margin: 0 auto;
+    }
+}
+
+/* Components reference page */
+.components__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-13);
+    padding-top: var(--section-pad-top);
+    padding-bottom: var(--section-pad-bottom);
+}
+
+.component-section__heading {
+    margin: 0 0 var(--spacing-06);
+    font-family: var(--font-display);
+    font-size: var(--type-32);
+    font-weight: 400;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+    padding-bottom: var(--spacing-05);
+}
+
+.component-label {
+    margin: 0 0 var(--spacing-03);
+    font-size: var(--type-12);
+    font-weight: 300;
+    color: #757575;
+}
+
+.component-label:not(:first-of-type) {
+    margin-top: var(--spacing-07);
+}
+
+.component-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-04);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.component-ratio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--page-gutter);
+    max-width: 900px;
+}
+
+.component-ratio-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-02);
+}
+
+.component-demo-pagination {
+    max-width: 400px;
+}
+
+.component-demo-toc {
+    max-width: 200px;
+}
+
+/* Live column grid — 4 / 8 / 16 cells, switching at the same breakpoints as the real layout */
+.component-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--page-gutter);
+}
+
+.component-grid__cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--spacing-09);
+    font-size: var(--type-12);
+    color: #0f62fe;
+    background: rgba(15, 98, 254, 0.08);
+    outline: 1px solid rgba(15, 98, 254, 0.35);
+}
+
+.component-grid__cell:nth-child(n + 5) {
+    display: none;
+}
+
+@media (min-width: 672px) {
+    .component-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .component-grid__cell:nth-child(n + 5) {
+        display: flex;
+    }
+
+    .component-grid__cell:nth-child(n + 9) {
+        display: none;
+    }
+}
+
+@media (min-width: 1056px) {
+    .component-grid {
+        grid-template-columns: repeat(16, 1fr);
+    }
+
+    .component-grid__cell:nth-child(n + 9) {
+        display: flex;
+    }
+}
+
+/* A live section/page sample sits inside a hairline frame so its own edges are visible */
+.component-frame {
+    padding: var(--spacing-06);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-media);
+}
+
+/* Token rows — every sample reads its size straight from the :root variable it names,
+   so editing a token in the stylesheet moves this page and every other page together */
+.component-token {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-03) var(--spacing-05);
+    padding: var(--spacing-03) 0;
+    border-bottom: 1px solid var(--color-line);
+}
+
+.component-token__name {
+    flex: 0 0 var(--spacing-13);
+    font-size: var(--type-12);
+    color: #757575;
+}
+
+.component-token__sample {
+    min-width: 0;
+    overflow: hidden;
+    line-height: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.component-token__bar {
+    flex: none;
+    max-width: 100%;
+    height: var(--spacing-03);
+    background: var(--color-green);
+    border-radius: var(--spacing-01);
+}
+
+.component-token__swatch {
+    flex: none;
+    width: var(--spacing-07);
+    height: var(--spacing-07);
+    border: 1px solid var(--color-line);
+    border-radius: var(--spacing-02);
+}
+
+.component-note {
+    max-width: 640px;
+    margin: 0 0 var(--spacing-06);
+    font-weight: 300;
+}
+
+.component-demo-social svg {
+    width: 48px;
+    height: 48px;
+}
+
+.component-demo-lottie {
+    max-width: 320px;
+}
+
+.component-demo-video {
+    max-width: 480px;
+}
+
+.component-demo-play {
+    position: relative;
+    width: 220px;
+    height: 80px;
+    background: var(--color-line);
+}
+
+.project-video {
+    position: relative;
+}
+
+.project-video__toggle {
+    z-index: 2;
+    position: absolute;
+    right: var(--spacing-05);
+    bottom: var(--spacing-05);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    border-radius: 999px;
+    cursor: none;
+    transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Playing (showing the pause icon) — no circle, just the white icon with its own drop
+   shadow so it stays legible over any video frame. project-video-toggle.js and
+   project-gif-toggle.js both toggle .is-video-paused to match the icon they just set. */
+.project-video__toggle .material-symbols-outlined {
+    font-size: 16px;
+    font-variation-settings: 'FILL' 1;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+}
+
+/* Paused (showing the play icon) — a solid white circle reappears behind a black icon */
+.project-video__toggle.is-video-paused {
+    color: #0f0f0f;
+    background-color: #fff;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.project-video__toggle.is-video-paused .material-symbols-outlined {
+    filter: none;
+}
+
+/* the toggle's display rule would otherwise win over the [hidden] attribute */
+.project-video__toggle[hidden] {
+    display: none;
+}
+
+/* a video inside a Playground strip tile: the wrapper takes the tile's height and shrinks to the
+   video's width, so the button sits on the video's corner and the strip's item widths don't change */
+.paged-strip__item .project-video {
+    height: 100%;
+    width: fit-content;
+}
+
+.project-video__youtube-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+}
+
+/* The YouTube frame swallows mouse events, so the cursor circle couldn't follow the pointer
+   over it and a click would pause the player without updating the toggle. A transparent
+   layer on top hands both back to the page. */
+.project-video__youtube-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.project-video__youtube-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.project-version-toggle {
+    display: inline-flex;
+    gap: var(--spacing-02);
+    margin-bottom: var(--spacing-06);
+}
+
+.project-version-toggle__option {
+    padding: var(--spacing-02) var(--spacing-05);
+    font-family: var(--font-primary);
+    font-weight: 400;
+    color: var(--color-ink);
+    background: var(--color-line);
+    border: none;
+    border-radius: 999px;
+    cursor: none;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Playground: the V1/V2/V3 switch floats at the bottom centre so it never changes the layout of
+   any version (it sits between the dev toggles at the right and the notes toolbar at the left) */
+.playground-versions {
+    position: fixed;
+    bottom: var(--spacing-05);
+    left: 50%;
+    z-index: 95;
+    padding: var(--spacing-02);
+    background-color: rgba(237, 237, 237, 0.5);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+    border-radius: 999px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(14px) saturate(180%);
+    -webkit-backdrop-filter: blur(14px) saturate(180%);
+    transform: translateX(-50%);
+}
+
+.playground-versions .project-version-toggle {
+    margin-bottom: 0;
+}
+
+/* V2: media in a row can have different proportions; keep each at its own height instead of
+   stretching to the tallest neighbour */
+.project-media-grid--natural {
+    align-items: start;
+}
+
+/* V3: the Work section's grid without a hero above it — no top rule under the navbar, and the
+   rows sit a gutter apart since the tiles carry no captions */
+.work--plain::before {
+    display: none;
+}
+
+.mosaic--tight {
+    row-gap: var(--page-gutter);
+}
+
+/* Tiles are numbered by a counter, so the number always follows the tile's place in the grid —
+   reorder the tiles in the markup and the "NN /" prefixes renumber themselves. */
+.work--plain .mosaic {
+    counter-reset: playground-tile;
+}
+
+.work--plain .mosaic__tile {
+    counter-increment: playground-tile;
+}
+
+.work--plain .mosaic__caption-title::before {
+    content: counter(playground-tile, decimal-leading-zero) " / ";
+}
+
+/* The shared grid carries a two-line annotation under each image — "01 / filename" over the
+   medium — the Playground's mixed grid never shows it. */
+.work--plain .mosaic__caption-title,
+.work--plain .mosaic__caption-media {
+    display: none;
+}
+
+.project-version-toggle__option.is-active {
+    background: var(--color-ink);
+    color: #fff;
+}
+
+/* Hero physics test — the #f2f2f2 box the hand-drawn stickers drop into (see hero-physics.js) */
+.hero-physics {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 5 / 3;
+    background: #f2f2f2;
+    border-radius: 20px;
+    overflow: hidden;
+    touch-action: none;
+    cursor: none;
+}
+
+.hero-physics__world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+}
+
+/* one wrapper per piece carries the physics body's position+rotation; the <img> inside it sits
+   at a fixed offset from the wrapper's own (0,0) — that offset is the vector from the body's true
+   centre of mass to the artwork's top-left corner, so rotating the wrapper carries the artwork
+   around its real physical pivot instead of its bounding-box centre (see hero-physics.js) */
+.hero-physics__piece-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    will-change: transform;
+}
+
+.hero-physics__piece {
+    position: absolute;
+    display: block;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.hero-physics__restart {
+    position: absolute;
+    right: var(--spacing-05);
+    bottom: var(--spacing-05);
+    z-index: 2;
+    padding: var(--pill-padding);
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    font-weight: 400;
+    color: var(--color-ink);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: none;
+}
+
+.hero-physics__restart:hover {
+    background: #fff;
+}
+
+.hero-physics__hint {
+    position: absolute;
+    left: var(--spacing-05);
+    bottom: var(--spacing-05);
+    z-index: 2;
+    margin: 0;
+    font-family: var(--font-primary);
+    font-size: var(--type-12);
+    color: rgba(15, 15, 15, 0.5);
+}

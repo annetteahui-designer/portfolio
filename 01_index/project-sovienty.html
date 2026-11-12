@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="../00_assets/01_images/Logo/webPortfolio_logo.webp">
+    <title>Sovereignty — The Video Game — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0..1,0&family=Geist:wght@400&family=Nixie+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../02_styles/styles.css?v=239">
+</head>
+<body class="is-dark-page">
+    <div id="dev-toggles" class="dev-toggles">
+        <button id="grid-toggle" class="dev-toggle" type="button" aria-pressed="false">Grid</button>
+        <button id="tokens-toggle" class="dev-toggle" type="button" aria-pressed="false">Tokens</button>
+        <button id="weight-toggle" class="dev-toggle" type="button" aria-pressed="false">Weight</button>
+            <button id="reveal-toggle" class="dev-toggle" type="button" aria-pressed="false">R</button>
+            <button id="measure-toggle" class="dev-toggle" type="button" aria-pressed="false">M</button>
+            <button id="notes-toggle" class="dev-toggle" type="button" aria-pressed="false">N</button>
+            <div class="dev-toggle-font" data-font-picker>
+                <button id="font-toggle" class="dev-toggle" type="button" aria-expanded="false" aria-haspopup="true">Font: Nimbus</button>
+                <div class="dev-toggle-font__menu" id="font-menu" hidden>
+                    <button type="button" class="dev-toggle-font__option is-active" data-font="nimbus">Nimbus</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="elizeth">Elizeth</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="elizeth-condensed">Elizeth Condensed</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="elizeth-light">Elizeth Light</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="affairs">Affairs</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="american-grotesk">American Grotesk</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="nixie-one">Nixie One</button>
+                    <button type="button" class="dev-toggle-font__option" data-font="geist">Geist</button>
+                </div>
+            </div>
+            <button id="type-scale-toggle" class="dev-toggle" type="button" aria-pressed="false">Type</button>
+    </div>
+    <div id="grid-overlay" class="grid-overlay" aria-hidden="true">
+        <div class="grid-overlay__inner"></div>
+    </div>
+    <div id="tokens-panel" class="tokens-panel" aria-hidden="true">
+        <div class="tokens-panel__handle" aria-hidden="true"></div>
+    </div>
+
+    <header class="navbar navbar--no-border">
+        <div class="navbar__inner">
+            <a href="index.html" class="logo" aria-label="Annette Hui"><span class="logo__lottie" data-lottie-src="../00_assets/03_animations/about-face-default.json" data-lottie-trigger="hover" data-lottie-actions="[{&quot;label&quot;:&quot;Spin&quot;,&quot;src&quot;:&quot;../00_assets/03_animations/logo-spin.json?v=2&quot;}]"><img class="logo__image" src="../00_assets/01_images/Homepage/about-face.webp" alt=""></span></a>
+            <div class="navbar__filler">@ NY</div>
+            <time class="navbar__clock" id="home-clock">00:00:00 NY</time>
+
+            <div class="navbar__controls">
+                <nav class="nav-block" aria-label="Primary">
+                    <a href="index.html#work" class="nav-block__item is-current" aria-current="page">
+                        <span class="nav-block__item-label">
+                            <span class="nav-block__item-label-inner">
+                                <span class="nav-block__item-text">Work</span>
+                                <span class="nav-block__item-text" aria-hidden="true">Work</span>
+                            </span>
+                        </span>
+                    </a>
+                    <a href="playground.html" class="nav-block__item">
+                        <span class="nav-block__item-label">
+                            <span class="nav-block__item-label-inner">
+                                <span class="nav-block__item-text">Playground</span>
+                                <span class="nav-block__item-text" aria-hidden="true">Playground</span>
+                            </span>
+                        </span>
+                    </a>
+                    <a href="about.html" class="nav-block__item">
+                        <span class="nav-block__item-label">
+                            <span class="nav-block__item-label-inner">
+                                <span class="nav-block__item-text">About</span>
+                                <span class="nav-block__item-text" aria-hidden="true">About</span>
+                            </span>
+                        </span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="project">
+            <div class="project__inner">
+                <aside class="project-sidebar">
+
+                    <span class="project-toc__line" aria-hidden="true"></span>
+
+                    <div class="project-sidebar__block">
+                        <div class="project-sidebar__heading-row">
+                            <h3 class="project-sidebar__heading">Table of Contents</h3>
+                            <button type="button" class="project-sidebar__toggle" aria-expanded="true" aria-label="Collapse table of contents">
+                                <span class="material-symbols-outlined" aria-hidden="true">keyboard_arrow_left</span>
+                            </button>
+                        </div>
+                        <nav class="project-toc">
+                            <a class="project-toc__link" href="#intro">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Intro
+                            </a>
+                            <a class="project-toc__link" href="#social-media">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Social Media
+                            </a>
+                            <a class="project-toc__link" href="#the-interface">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                The Interface
+                            </a>
+                            <a class="project-toc__link" href="#the-game">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                The Game
+                            </a>
+                            <a class="project-toc__link" href="#icons-tiles">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Icons &amp; Tiles
+                            </a>
+                            <a class="project-toc__link" href="#custom-character-profiles">
+                                <span class="project-toc__marker" aria-hidden="true"></span>
+                                Custom Character Profiles
+                            </a>
+                        </nav>
+                    </div>
+
+                </aside>
+
+                <div class="project-content">
+                    <section class="project-intro" id="intro">
+                        <h1 class="project-title">Sovereignty — The Video Game</h1>
+
+                        <div class="project-media-grid" style="align-items: start;">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image" style="aspect-ratio: 2000 / 1250;" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterCastle.png" alt="Sovereignty Twitter castle graphic"></div>
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterFire.gif" alt="Sovereignty Twitter fire animation" data-loop-forever></div>
+                        </div>
+
+                        <div class="project-facts">
+                            <div class="project-facts__col">
+                                <div class="project-facts__item project-facts__tags">
+                                    <h3 class="project-facts__label">Design Areas</h3>
+                                    <ul class="project-tags">
+                                        <li class="project-tags__item">
+                                            <span class="project-tags__icon project-tags__icon--blue material-symbols-outlined" aria-hidden="true">custom_typography</span>
+                                            Branding
+                                        </li>
+                                        <li class="project-tags__item">
+                                            <span class="project-tags__icon project-tags__icon--pink material-symbols-outlined" aria-hidden="true">edit</span>
+                                            Illustration
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="project-facts__item">
+                                    <h3 class="project-facts__label">Team</h3>
+                                    <p class="project-facts__value">Annette Hui, Chris Rodriguez</p>
+                                </div>
+                            </div>
+                            <div class="project-facts__col project-facts__description">
+                                <p class="project-intro__text">Designer Chris Rodriguez and I collaborated on a dark fantasy video game project called Sovereignty. Together we were able to immerse users with the power of pixel art and storytelling.<br><br>I've had the responsibility of systemizing social media posts, gaming assets, and NFT artworks that tied with this game. I feel very proud challenging myself with an art style I was not familiar with. This was built in Web3.<br><br>As you'll navigate through this project, you'll go on an epic quest just like we did.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="project-section" id="social-media">
+                        <h2 class="project-section__heading">Social Media</h2>
+                        <p class="project-section__text">A significant aspect of promoting the game involved captivating illustrations and compelling storytelling shared on Twitter in the lead-up to the final release. This strategic approach ignited excitement among followers, providing them with a compelling reason to anticipate the game's launch.<br><br>Our efforts extended to creating illustrations that alluded to elements of the game, with support of an awe-inspiring trailer.</p>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image" style="aspect-ratio: 2500 / 834;" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty-logo.jpeg" alt="Sovereignty logo"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitter3NCastle04051.png" alt="Sovereignty Twitter castle teaser"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterBadge.jpg" alt="Sovereignty Twitter badge graphic"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterCrown.png" alt="Sovereignty Twitter crown graphic"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterGiveaway.png" alt="Sovereignty Twitter giveaway graphic"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterMap.jpg" alt="Sovereignty Twitter map graphic"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterGamble.png" alt="Sovereignty Twitter gamble graphic"></div>
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_twitterWeapons.jpg" alt="Sovereignty Twitter weapons graphic"></div>
+                        </div>
+                    </section>
+
+                    <section class="project-section" id="the-interface">
+                        <h2 class="project-section__heading">The Interface</h2>
+                        <p class="project-section__text">Chris meticulously crafted the interface, which blended seamlessly with the brand and marketing material.<br><br>In order for users to play, users had to use Metamask in order to verify their wallets. They used ethereum.<br><br>As a creative, it meant a lot to see people all over the world empower and support my creative efforts.</p>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-16-9" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_image_2.jpg" alt="Sovereignty game interface screenshot"></div>
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image" style="aspect-ratio: 2500 / 279;" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_interface.jpg" alt="Sovereignty interface strip detail"></div>
+                        </div>
+                    </section>
+
+                    <section class="project-section" id="the-game">
+                        <h2 class="project-section__heading">The Game</h2>
+                        <p class="project-section__text">Chris meticulously crafted the interface, employing dark screens and a medieval font to evoke a sense of fantasy throughout the user experience.<br><br>Organizing information in a user-friendly manner was no small feat, but Chris certainly took on that challenge. My contribution primarily focused on designing icons and tiles to enhance the game's visual appeal and usability.</p>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image" style="aspect-ratio: 1924 / 1202;" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_image_1.png" alt="Sovereignty game screenshot"></div>
+                        </div>
+                    </section>
+
+                    <section class="project-section" id="icons-tiles">
+                        <h2 class="project-section__heading">Video Game Icons &amp; Tiles</h2>
+                        <p class="project-section__text">The development of the video game required an extensive library of icons and tile assets, serving as the cornerstone of Sovereignty's entire world.</p>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image" style="aspect-ratio: 1920 / 1920;" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_icons.png" alt="Sovereignty icons and tiles sheet"></div>
+                        </div>
+                    </section>
+
+                    <section class="project-section" id="custom-character-profiles">
+                        <h2 class="project-section__heading">NFT Characters</h2>
+                        <p class="project-section__text">Below are a snippets that barely scratch the surface of these customizable profiles designed to enrich the gaming experience. The extensive list of assets included clothing, facial expressions, weapons, headpieces, and hairstyles, each meticulously crafted to create to highly detailed artworks. With this diverse array of assets, players could create over 500+ unique characters, adding depth and diversity to the game.</p>
+
+                        <div class="project-media-grid">
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_frame_2.png" alt="Sovereignty NFT character frame"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_frame_1.png" alt="Sovereignty NFT character frame"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_goblinBlue2.png" alt="Sovereignty blue goblin NFT character"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_frame_3.png" alt="Sovereignty NFT character frame"></div>
+                            <div class="project-media project-media--span-6" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_group7.png" alt="Sovereignty NFT character group"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_nftHuman.jpg" alt="Sovereignty human NFT character"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_nftOrc.jpg" alt="Sovereignty orc NFT character"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_goblinGreen.jpg" alt="Sovereignty green goblin NFT character"></div>
+                            <div class="project-media project-media--span-3" data-reveal><img class="project-media__image ratio-1-1" src="../00_assets/01_images/Sovereignty/webPortfolio_sovereignty_nftHuman2.jpg" alt="Sovereignty human NFT character"></div>
+                        </div>
+                    </section>
+
+                    <nav class="project-pagination" aria-label="Project">
+                        <div class="project-pagination__group">
+                            <a class="project-pagination__link" href="index.html#work">
+                                <span class="material-symbols-outlined" aria-hidden="true">grid_view</span>
+                                All Work
+                            </a>
+                            <a class="project-pagination__link" href="project-consensys.html">
+                                <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+                                Previous Project
+                            </a>
+                        </div>
+                        <a class="project-pagination__link project-pagination__link--next" href="project-corporation.html">
+                            Next Project
+                            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer" id="playground">
+        <div class="site-footer__inner">
+            <div class="site-footer__sketch">
+              <div class="site-footer__sketch-inner">
+                <div class="site-footer__sketch-heading-col">
+                    <p class="site-footer__sketch-heading" data-bump-heading><span class="site-footer__sketch-heading-word">Wanna</span><br><span class="site-footer__sketch-heading-word">chat?</span></p>
+                </div>
+                <div class="site-footer__sketch-list-col">
+                    <a class="site-footer__sketch-item" href="mailto:annette.a.hui@gmail.com">
+                        <span class="site-footer__sketch-item-index">01/</span>
+                        <span class="site-footer__sketch-item-label">annette.a.hui@gmail.com</span>
+                    </a>
+                    <a class="site-footer__sketch-item" href="https://linkedin.com" target="_blank" rel="noopener">
+                        <span class="site-footer__sketch-item-index">02/</span>
+                        <span class="site-footer__sketch-item-label">LinkedIn</span>
+                    </a>
+                    <a class="site-footer__sketch-item" href="https://instagram.com" target="_blank" rel="noopener">
+                        <span class="site-footer__sketch-item-index">03/</span>
+                        <span class="site-footer__sketch-item-label">Instagram</span>
+                    </a>
+                </div>
+              </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../03_scripts/draggable.js"></script>
+    <script src="../03_scripts/grid-overlay.js"></script>
+    <script src="../03_scripts/font-toggle.js?v=2"></script>
+    <script src="../03_scripts/type-scale-toggle.js?v=1"></script>
+    <script src="../03_scripts/tokens-panel.js"></script>
+    <script src="../03_scripts/media-weight-flag.js"></script>
+    <script src="../03_scripts/reveal-filenames.js"></script>
+    <script src="../03_scripts/measure-tool.js"></script>
+    <script src="../03_scripts/notes-tool.js"></script>
+    <script src="../03_scripts/dev-hotkeys.js"></script>
+    <script src="../03_scripts/nyc-clock.js"></script>
+    <script src="../03_scripts/footer-heading-bump.js"></script>    <script src="../03_scripts/cursor-dot.js?v=3"></script>
+    <script src="../03_scripts/view-cursor.js?v=3"></script>
+    <script src="../03_scripts/nav-scroll.js"></script>
+    <script src="../03_scripts/vendor/lottie_light.min.js"></script>
+    <script src="../03_scripts/lottie-player.js?v=3"></script>
+    <script src="../03_scripts/project-video-toggle.js?v=2"></script>
+    <script src="../03_scripts/project-toc.js?v=2"></script>
+    <script src="../03_scripts/mobile-toc-menu.js?v=2"></script>
+    <script src="../03_scripts/project-sidebar-toggle.js?v=3"></script>
+    <script src="../03_scripts/project-toc-line.js?v=4"></script>
+    <script src="../03_scripts/scroll-reveal.js"></script>
+    <script src="../03_scripts/project-gif-toggle.js?v=5"></script>
+    <script src="../03_scripts/inline-editor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            makeDraggable(document.getElementById('dev-toggles'));
+            makeDraggable(document.querySelector('.tokens-panel__handle'), document.getElementById('tokens-panel'));
+        });
+    </script>
+</body>
+</html>
