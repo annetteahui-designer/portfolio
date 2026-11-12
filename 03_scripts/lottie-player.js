@@ -14,6 +14,10 @@
     //                        focused) instead of on click, with no cursor label — the logo uses
     //                        this to spin once on hover. It stays put until the pointer leaves
     //                        and comes back, and reduced-motion visitors don't get the spin.
+    //   data-lottie-play-on-load  hover-triggered blocks only: plays the first action once,
+    //                        shortly after landing on idle, as if the visitor had just hovered —
+    //                        the homepage logo uses this so it spins once on arrival instead of
+    //                        waiting for a real hover. Skipped for reduced-motion visitors.
     //
     // Every animation is loaded up front and stacked as a layer, so switching is instant.
     // The <img> inside the block is a fallback shown until the idle animation is ready (and
@@ -157,6 +161,24 @@
                 sync();
             }
 
+            var autoPlayTriggered = false;
+
+            // Fires from both the idle layer's and each action layer's own DOMLoaded — whichever
+            // finishes loading last is what actually starts it, so this doesn't race a slow
+            // connection the way a flat setTimeout would.
+            function maybeAutoPlay() {
+                if (autoPlayTriggered || reduceMotion || !triggerOnHover || !block.hasAttribute('data-lottie-play-on-load')) {
+                    return;
+                }
+
+                if (!idle.ready || !nextAction()) {
+                    return;
+                }
+
+                autoPlayTriggered = true;
+                setTimeout(playAction, 500);
+            }
+
             idle = makeLayer(block.getAttribute('data-lottie-src'), true);
             actionDefs.forEach(function (def) {
                 var layer = makeLayer(def.src, false);
@@ -166,6 +188,7 @@
                         returnToIdle();
                     }
                 });
+                layer.animation.addEventListener('DOMLoaded', maybeAutoPlay);
                 actions.push(layer);
             });
 
@@ -246,6 +269,8 @@
                 if (button) {
                     button.hidden = false;
                 }
+
+                maybeAutoPlay();
 
                 updateLabel();
                 sync();
