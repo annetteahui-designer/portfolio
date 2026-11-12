@@ -172,11 +172,6 @@
             // finishes loading last is what actually starts it, so this doesn't race a slow
             // connection the way a flat setTimeout would.
             function maybeAutoPlay() {
-                if (block.classList.contains('logo__lottie')) {
-                    window.__logoDebug = window.__logoDebug || [];
-                    window.__logoDebug.push({ t: Date.now(), autoPlayTriggered: autoPlayTriggered, reduceMotion: reduceMotion, triggerOnHover: triggerOnHover, hasAttr: block.hasAttribute('data-lottie-play-on-load'), idleReady: idle.ready, nextActionReady: !!nextAction() });
-                }
-
                 if (autoPlayTriggered || reduceMotion || !triggerOnHover || !block.hasAttribute('data-lottie-play-on-load')) {
                     return;
                 }
@@ -187,9 +182,6 @@
 
                 autoPlayTriggered = true;
                 setTimeout(function () {
-                    if (block.classList.contains('logo__lottie')) {
-                        window.__logoDebug.push({ t: Date.now(), event: 'timeout-fired' });
-                    }
                     hoverTarget.classList.add('is-auto-playing');
                     playAction();
                 }, 500);
