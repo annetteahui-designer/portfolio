@@ -56,15 +56,19 @@
             // hovering anywhere over the media — not just the small button — shows the circle.
             // Media marked data-toggle-only keeps it to the button (the About face uses the body
             // for its own actions). Media marked data-hover-caption-then-pause (the homepage
-            // hero) holds this circle back until caption-cursor.js's own pill has had its turn
-            // first and marked the element .caption-cursor-done.
+            // hero, and any mosaic tile video with a caption) holds this circle back until
+            // caption-cursor.js's own pill has had its turn first and marked the element
+            // .caption-cursor-done — checked via closest() rather than on el directly, since a
+            // mosaic tile's data-hover-caption-then-pause sits on the outer .mosaic__media, one
+            // level above the .project-video that el actually matches here.
             find: function (node) {
                 return nearest(node, '.project-video, .project-media', function (el) {
                     if (!toggleOf(el) || el.hasAttribute('data-toggle-only')) {
                         return false;
                     }
 
-                    return !el.hasAttribute('data-hover-caption-then-pause') || el.classList.contains('caption-cursor-done');
+                    var captioned = el.closest('[data-hover-caption-then-pause]');
+                    return !captioned || captioned.classList.contains('caption-cursor-done');
                 });
             },
             // the toggle scripts already flip aria-label between "Pause …" and "Play …"

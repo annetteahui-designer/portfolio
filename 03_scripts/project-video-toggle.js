@@ -23,10 +23,14 @@
         wrapper.appendChild(video);
 
         // A video whose media already carries its own hover pill (data-hover-caption, see
-        // caption-cursor.js) keeps the Pause/Play circle off the whole area — the two cursors
-        // showing at once over the same hover looked broken — restricting it to just the
-        // button itself, same as data-toggle-only already does for the About face.
-        if (video.closest('[data-hover-caption]')) {
+        // caption-cursor.js) keeps the Pause/Play circle off the whole area while that pill is
+        // showing — the two cursors at once over the same hover looked broken — restricting it
+        // to just the button itself, same as data-toggle-only already does for the About face.
+        // Skipped for data-hover-caption-then-pause media: once the caption hands off (see
+        // view-cursor.js's wide-area target), the wide-area circle is exactly what should take
+        // over, so this never restricts those permanently the way it does a plain caption that
+        // has nowhere to hand off to.
+        if (video.closest('[data-hover-caption]') && !video.closest('[data-hover-caption-then-pause]')) {
             wrapper.setAttribute('data-toggle-only', '');
         }
 

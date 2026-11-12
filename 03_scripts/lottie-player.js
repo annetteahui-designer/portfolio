@@ -45,6 +45,10 @@
             }
 
             var triggerOnHover = block.getAttribute('data-lottie-trigger') === 'hover';
+            // the whole link is the hover target, not just the disc inside it — also doubles as
+            // what maybeAutoPlay/returnToIdle toggle .is-auto-playing on, so an auto-played spin
+            // grows the logo exactly like a real hover would.
+            var hoverTarget = block.closest('a') || block;
             var pausedByUser = reduceMotion;
             var busy = false;          // an action is playing
             var nextIndex = 0;
@@ -135,6 +139,7 @@
                 busy = false;
                 nextIndex = (nextIndex + 1) % actions.length;
                 show(idle);
+                hoverTarget.classList.remove('is-auto-playing');
 
                 if (reduceMotion || pausedByUser) {
                     idle.animation.goToAndStop(0, true);
@@ -176,7 +181,10 @@
                 }
 
                 autoPlayTriggered = true;
-                setTimeout(playAction, 500);
+                setTimeout(function () {
+                    hoverTarget.classList.add('is-auto-playing');
+                    playAction();
+                }, 500);
             }
 
             idle = makeLayer(block.getAttribute('data-lottie-src'), true);
@@ -193,9 +201,6 @@
             });
 
             if (actions.length && triggerOnHover) {
-                // the whole link is the hover target, not just the disc inside it
-                var hoverTarget = block.closest('a') || block;
-
                 if (!reduceMotion) {
                     hoverTarget.addEventListener('mouseenter', playAction);
                     hoverTarget.addEventListener('focus', playAction);

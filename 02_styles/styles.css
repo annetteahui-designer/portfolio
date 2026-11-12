@@ -453,7 +453,11 @@ h6 {
    that clip the instant it grew past the disc's own bounds. Scaling .logo itself avoids that:
    an element's transform enlarges its already-clipped rendered box as one piece, it doesn't
    get re-clipped by its own overflow. The fallback image still spins on top of that scale. */
-.logo:hover {
+/* .is-auto-playing mirrors the hover scale — lottie-player.js adds it for the duration of a
+   data-lottie-play-on-load auto-spin, so arriving on the homepage looks exactly like a hover
+   that happened on its own. */
+.logo:hover,
+.logo.is-auto-playing {
     transform: scale(1.08);
 }
 
@@ -516,7 +520,11 @@ h6 {
     pointer-events: none;
 }
 
-@media (min-width: 1056px) {
+/* Raised from the site's usual 1056px: below 1190px the controls column (13-16 of 16) gets
+   too narrow for the nav-block's own content (Work/Playground/About), overflowing its box.
+   Snapping to the tablet/mobile layout — nav sized naturally instead of squeezed into a
+   fixed-width grid column — all the way up to 1190px avoids that squeeze entirely. */
+@media (min-width: 1190px) {
     .navbar__inner {
         display: grid;
         grid-template-columns: repeat(16, 1fr);
@@ -968,15 +976,20 @@ h6 {
 
 /* Below desktop the headline above this sits at a flat 40px, so the gap down to this block
    (the headline's only margin) is fixed at 32px too instead of the 48px desktop spacing. */
-@media (max-width: 1055px) {
+@media (max-width: 1189px) {
     .hero-banner__split {
         margin-top: var(--spacing-07);
     }
 }
 
 /* Tablet: the copy narrows to the left half (1-4 of 8) instead of stretching full width;
-   media and arrow stay full-width, each on their own row, same stacking order as mobile. */
-@media (min-width: 672px) and (max-width: 1055px) {
+   media and arrow stay full-width, each on their own row, same stacking order as mobile.
+   Raised from the site's usual 1055px upper bound: below 1190px the copy/arrow's shared
+   column (13-16 of 16, in the desktop layout below) gets too narrow — the copy's text wraps
+   onto more lines than the column has room for, so it grows tall enough to overlap the
+   bottom-aligned arrow sharing that same cell. Snapping to this simpler stacked layout (no
+   shared cell to overlap) all the way up to 1190px avoids that collision entirely. */
+@media (min-width: 672px) and (max-width: 1189px) {
     .hero-banner__split {
         grid-template-columns: repeat(8, 1fr);
         column-gap: var(--page-gutter);
@@ -995,7 +1008,7 @@ h6 {
     }
 }
 
-@media (min-width: 1056px) {
+@media (min-width: 1190px) {
     .hero-banner__split {
         grid-template-columns: repeat(16, 1fr);
         column-gap: var(--page-gutter);
@@ -1052,8 +1065,9 @@ h6 {
     }
 }
 
-/* Tablet (8-column grid) — columns 1-4, i.e. exactly half the grid */
-@media (min-width: 672px) and (max-width: 1055px) {
+/* Tablet (8-column grid) — columns 1-4, i.e. exactly half the grid. Upper bound matches the
+   hero-banner__split tablet range above (raised to 1190px). */
+@media (min-width: 672px) and (max-width: 1189px) {
     .hero-banner__split-arrow {
         width: calc(50% - var(--page-gutter) / 2);
         justify-self: start;
@@ -2087,9 +2101,9 @@ body.is-dark-page .project-pagination__link {
 }
 
 /* the solid white override above outranks the shared :hover rule's specificity, which would
-   otherwise suppress it on dark pages — restate the same yellow hover from light pages here */
+   otherwise suppress it on dark pages — restate the same hover blue from light pages here */
 body.is-dark-page .project-pagination__link:hover {
-    background: var(--color-yellow);
+    background: var(--color-hover);
 }
 
 .project__inner {
@@ -3257,7 +3271,7 @@ body.is-dark-page .project-pagination__link:hover {
 }
 
 .project-pagination__link:hover {
-    background: var(--color-yellow);
+    background: var(--color-hover);
 }
 
 .project-pagination__link .material-symbols-outlined {
@@ -3738,6 +3752,14 @@ body.hide-cursor-dot .cursor-dot {
     opacity: 0;
 }
 
+/* The toggle bar itself is hidden from every visitor by default — only pressing D
+   (dev-hotkeys.js) reveals it, so the dev tools never show up for someone just browsing the
+   live site. The reveal is remembered in localStorage, so it stays visible across reloads for
+   whoever turned it on, without needing to press D again on every page. */
+body.dev-ui-visible .dev-toggles {
+    display: flex;
+}
+
 /* Pressing H (dev-hotkeys.js) hides every dev tool at once — the toggle bar itself, any open
    panel, sticky notes, overlays — without touching each tool's own on/off state, so pressing
    H again brings back exactly what was showing before. */
@@ -3755,13 +3777,13 @@ body.dev-ui-hidden .measure-distance-label {
     display: none;
 }
 
-/* Dev tool toggle buttons */
+/* Dev tool toggle buttons — hidden by default; see body.dev-ui-visible above */
 .dev-toggles {
+    display: none;
     position: fixed;
     bottom: var(--spacing-05);
     right: var(--spacing-05);
     z-index: 10000;
-    display: flex;
     gap: var(--spacing-03);
     cursor: none;
     touch-action: none;

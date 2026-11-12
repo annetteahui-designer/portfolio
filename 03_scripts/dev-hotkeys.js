@@ -8,8 +8,24 @@
         n: 'notes-toggle'
     };
 
+    var VISIBLE_STORAGE_KEY = 'devUiVisible';
+
+    // The toggle bar is hidden from every visitor by default (see styles.css); pressing D
+    // reveals it and remembers that choice in localStorage, so it stays revealed across page
+    // loads for whoever turned it on instead of needing D pressed again on every page. This
+    // script runs at the end of body, so document.body already exists here.
+    if (localStorage.getItem(VISIBLE_STORAGE_KEY) === '1') {
+        document.body.classList.add('dev-ui-visible');
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('keydown', function (e) {
+            if (!e.metaKey && !e.ctrlKey && !e.altKey && e.key.toLowerCase() === 'd') {
+                var visible = document.body.classList.toggle('dev-ui-visible');
+                localStorage.setItem(VISIBLE_STORAGE_KEY, visible ? '1' : '0');
+                return;
+            }
+
             if (e.metaKey || e.ctrlKey || e.altKey) {
                 return;
             }
