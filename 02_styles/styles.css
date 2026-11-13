@@ -598,15 +598,12 @@ h6 {
     }
 }
 
-/* Below ~340px, close the logo-to-nav gap too and let the nav's own words sit closer together
-   — the words compensating for the lost space reads better than the nav overlapping the logo. */
+/* Below ~340px, keep the logo-to-nav gap as is (it reads well there) and instead let the nav's
+   own words sit closer together — the words compensating for the lost space reads better than
+   shrinking the one gap that's actually working. */
 @media (max-width: 340px) {
-    .navbar__inner {
-        column-gap: 0;
-    }
-
     .nav-block {
-        gap: var(--spacing-02);
+        gap: var(--spacing-01);
     }
 }
 
@@ -3161,6 +3158,16 @@ body.is-dark-page .project-pagination__link:hover {
     width: auto;
     height: 344px;
     aspect-ratio: 16 / 9;
+}
+
+/* Mobile: fixed at a 344px-tall desktop size (~611px wide), each Set Design concept tile is
+   wider than the whole phone screen, so only a sliver is ever visible at once — sizing to the
+   page's own available width instead shows each concept in full as the belt scrolls through. */
+@media (max-width: 671px) {
+    .asset-belt__item--large {
+        width: calc(100vw - (var(--page-margin) * 2));
+        height: auto;
+    }
 }
 
 .asset-belt__item--icon {
