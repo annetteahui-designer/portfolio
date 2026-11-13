@@ -495,16 +495,20 @@ h6 {
     pointer-events: none;
 }
 
-/* Mobile: the glass state's fade-out is a desktop-only flourish — there's no room to spare for
-   a disappearing/reappearing logo on a small screen, so it (or the About page's name link,
-   which stands in for it below 672px) just stays put through the glass transition instead. */
+/* Mobile, homepage/About/Playground only (marked with .navbar--mobile-stretch — not project
+   pages, which keep the plain collapse-in-place above): the logo/name fades out exactly as
+   everywhere else, then the nav pill smoothly claims the freed column instead of leaving a dead
+   gap where it used to sit. Explicit px (not auto) on the logo column is what makes the
+   grid-template-columns change transitionable at all — "auto" can't be interpolated. */
 @media (max-width: 671px) {
-    .navbar.is-minimal .logo,
-    .navbar.is-minimal .navbar__name {
-        opacity: 1;
-        visibility: visible;
-        max-height: var(--logo-size);
-        pointer-events: auto;
+    .navbar--mobile-stretch .navbar__inner {
+        grid-template-columns: var(--logo-size) 1fr;
+        transition: grid-template-columns 0.4s ease, column-gap 0.4s ease;
+    }
+
+    .navbar--mobile-stretch.is-minimal .navbar__inner {
+        grid-template-columns: 0px 1fr;
+        column-gap: 0;
     }
 }
 
