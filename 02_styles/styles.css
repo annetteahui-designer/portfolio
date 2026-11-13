@@ -3101,6 +3101,23 @@ body.is-dark-page .project-pagination__link:hover {
     border-radius: 0;
 }
 
+/* Mobile: both tiles above are sized for desktop (560px / 348px-tall) — on a narrow phone
+   that's wider than the whole screen, so only a sliver of each poster/circuit-breaker is
+   ever visible at once, reading as oversized and cropped. Sizing to the showcase's own
+   available width (the page margin plus .poster-showcase's own padding, both sides) instead
+   shows each tile in full within the black frame, while the belt keeps scrolling through
+   them one at a time instead of streaming past as a filmstrip. */
+@media (max-width: 671px) {
+    .asset-belt__item--poster {
+        width: calc(100vw - (var(--page-margin) * 2) - (var(--spacing-05) * 2));
+    }
+
+    .asset-belt__item--circuit-breaker {
+        width: calc(100vw - (var(--page-margin) * 2) - (var(--spacing-05) * 2));
+        height: auto;
+    }
+}
+
 /* Sized by width instead of height — each tile fills the full width of a narrow, portrait
    container (.asset-belt--vertical) and stacks top to bottom rather than side to side. */
 .asset-belt__item--square-fill {
