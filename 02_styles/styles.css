@@ -671,22 +671,26 @@ h6 {
 
 /* hovering any item turns the whole block the hover color, not just that item — the same
    color "Check out projects" takes. The text is pinned dark so it reads on it on every page,
-   dark pages included, and the glass state takes the same solid fill. */
-.nav-block:has(.nav-block__item:hover),
-.navbar.is-minimal .nav-block:has(.nav-block__item:hover) {
-    background-color: var(--color-hover);
-}
+   dark pages included, and the glass state takes the same solid fill. Mouse-only: touch
+   screens don't have a real :hover, but tapping still briefly triggers it, which read as a
+   glitchy blue flash on every tap rather than a deliberate hover effect. */
+@media (hover: hover) and (pointer: fine) {
+    .nav-block:has(.nav-block__item:hover),
+    .navbar.is-minimal .nav-block:has(.nav-block__item:hover) {
+        background-color: var(--color-hover);
+    }
 
-.navbar.is-minimal .nav-block:has(.nav-block__item:hover) {
-    border-color: transparent;
+    .navbar.is-minimal .nav-block:has(.nav-block__item:hover) {
+        border-color: transparent;
+    }
+
+    .nav-block:has(.nav-block__item:hover) .nav-block__item-text {
+        color: #0f0f0f;
+    }
 }
 
 .nav-block__item.is-current {
     font-weight: 600;
-}
-
-.nav-block:has(.nav-block__item:hover) .nav-block__item-text {
-    color: #0f0f0f;
 }
 
 .nav-block__item-label {
@@ -702,8 +706,12 @@ h6 {
     transition: transform 0.25s ease;
 }
 
-.nav-block__item:hover .nav-block__item-label-inner {
-    transform: translateY(-16px);
+/* Mouse-only, same reason as the hover background above — a touch tap shouldn't trigger the
+   label-flip effect either. */
+@media (hover: hover) and (pointer: fine) {
+    .nav-block__item:hover .nav-block__item-label-inner {
+        transform: translateY(-16px);
+    }
 }
 
 .nav-block__item-text {
