@@ -3462,6 +3462,13 @@ body.is-dark-page .project-pagination__link:hover {
     .project-pagination__link--next {
         gap: 0;
         font-size: 0;
+        /* Equal width/height turns the pill into a true circle around the icon — matching
+           the mobile hamburger menu button's own 48px glass circle — instead of staying the
+           wide pill's rectangular padding now that there's no label text to fill it out. */
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        justify-content: center;
     }
 }
 
