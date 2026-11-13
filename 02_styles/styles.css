@@ -2340,7 +2340,10 @@ body.is-dark-page .project-pagination__link:hover {
     align-items: center;
     gap: var(--tag-gap);
     line-height: var(--spacing-05);
-    padding: var(--tag-padding);
+    /* --tag-padding split into top/bottom halves and shifted 2px down — this font's text
+       sits visibly above the pill's true vertical centre otherwise. The icon below counters
+       the same shift so it stays exactly where it already read correctly. */
+    padding: calc(6px + 2px) var(--spacing-04) calc(6px - 2px) var(--spacing-04);
     font-size: var(--type-12);
     font-weight: 300;
     background: var(--color-hover-green);
@@ -2357,7 +2360,9 @@ body.is-dark-page .project-pagination__link:hover {
     line-height: 1;
     color: var(--color-ink);
     /* Material Symbols glyphs sit low in their own box relative to the label text next to
-       them — a small optical nudge up keeps the two reading as sitting on one line. */
+       them — a small optical nudge up keeps the two reading as sitting on one line. Left at
+       -1px (not counter-shifted against the item's own padding change above) so the icon
+       moves down together with the text instead of staying anchored to its old position. */
     transform: translateY(-1px);
 }
 
@@ -2871,7 +2876,13 @@ body.is-dark-page .project-pagination__link:hover {
     width: 75%;
     aspect-ratio: 1;
     border-radius: 50%;
-    filter: blur(70px);
+    /* The blur radius doesn't shrink with the blob the way a percentage would — on a narrow
+       container the same 70px spreads over a much bigger share of the (now smaller) blob,
+       diluting it toward grey instead of reading as distinct, saturated color. Scaling with
+       viewport width keeps the blur proportional to the blob at any size; the clamp holds it
+       at today's 70px from roughly tablet width up, and never lets it go soft enough to lose
+       the blob's edge entirely on the smallest phones. */
+    filter: blur(clamp(24px, 5vw, 70px));
     mix-blend-mode: screen;
 }
 
@@ -4871,7 +4882,9 @@ body.show-media-weight .media-weight-flag {
 }
 
 .project-version-toggle__option {
-    padding: var(--spacing-02) var(--spacing-05);
+    /* Shifted 2px down from the even var(--spacing-02) top/bottom split — this font's text
+       sits visibly above the pill's true vertical centre otherwise. */
+    padding: calc(var(--spacing-02) + 2px) var(--spacing-05) calc(var(--spacing-02) - 2px) var(--spacing-05);
     font-family: var(--font-primary);
     font-weight: 400;
     color: var(--color-ink);
