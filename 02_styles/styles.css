@@ -2789,10 +2789,10 @@ body.is-dark-page .project-pagination__link:hover {
    into the live site (no glass overlay to tap through first, see .project-iframe-frame), this
    is what cues a visitor that it's interactive instead of a plain screenshot. */
 .project-section__hint {
-    margin: 0 0 var(--spacing-05);
+    margin: var(--spacing-05) 0 var(--spacing-05);
     font-size: var(--type-12);
     font-weight: 300;
-    color: #757575;
+    color: var(--color-ink);
 }
 
 .project-media-group__label {
