@@ -412,6 +412,15 @@ h6 {
     }
 }
 
+/* Below ~340px even the tightened nav above starts running out of room next to the logo.
+   Letting it close the last bit of breathing room and sit flush against the logo (rather than
+   overlapping it) buys back exactly the margin that's missing at these widths. */
+@media (max-width: 340px) {
+    .navbar__inner {
+        column-gap: 0;
+    }
+}
+
 /* the clock only has room once the bar can hold logo + clock + nav side by side */
 @media (min-width: 900px) {
     .navbar__inner {
