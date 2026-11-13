@@ -3373,6 +3373,36 @@ body.is-dark-page .project-pagination__link:hover {
     margin-left: auto;
 }
 
+/* Mobile: "All Work" stays put on its own row (not stretched — display:contents just lets it
+   and "Previous Project" act as direct flex children of .project-pagination again, so they can
+   be reordered independently of their shared wrapper div); a zero-height, full-width spacer
+   forces the wrap onto a new line after it; "Previous Project" and "Next Project" then share
+   that second row, with the existing margin-left:auto still pushing Next to the right edge. */
+@media (max-width: 671px) {
+    .project-pagination__group {
+        display: contents;
+    }
+
+    .project-pagination__group > .project-pagination__link:first-child {
+        order: 1;
+    }
+
+    .project-pagination::before {
+        content: "";
+        order: 2;
+        flex-basis: 100%;
+        height: 0;
+    }
+
+    .project-pagination__group > .project-pagination__link:last-child {
+        order: 3;
+    }
+
+    .project-pagination__link--next {
+        order: 4;
+    }
+}
+
 /* Footer */
 .site-footer {
     background: #fff;
