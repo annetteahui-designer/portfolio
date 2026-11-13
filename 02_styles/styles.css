@@ -2785,16 +2785,6 @@ body.is-dark-page .project-pagination__link:hover {
     margin-bottom: 0;
 }
 
-/* A short pointer to the live embed right below it — now that the embed itself opens straight
-   into the live site (no glass overlay to tap through first, see .project-iframe-frame), this
-   is what cues a visitor that it's interactive instead of a plain screenshot. */
-.project-section__hint {
-    margin: var(--spacing-05) 0 var(--spacing-05);
-    font-size: var(--type-12);
-    font-weight: 300;
-    color: var(--color-ink);
-}
-
 .project-media-group__label {
     margin: 0 0 var(--spacing-04);
     font-weight: 400;
