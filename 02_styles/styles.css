@@ -2420,10 +2420,10 @@ body.is-dark-page .project-pagination__link:hover {
     line-height: 1;
     color: var(--color-ink);
     /* Material Symbols glyphs sit low in their own box relative to the label text next to
-       them — a small optical nudge up keeps the two reading as sitting on one line. Left at
-       -1px (not counter-shifted against the item's own padding change above) so the icon
-       moves down together with the text instead of staying anchored to its old position. */
-    transform: translateY(-1px);
+       them — a small optical nudge up keeps the two reading as sitting on one line. Nudged up
+       one more px from -1px after a direct report that some glyphs (e.g. "imagesmode") still
+       read as sitting lower than the label text beside them. */
+    transform: translateY(-2px);
 }
 
 
@@ -2812,13 +2812,33 @@ body.is-dark-page .project-pagination__link:hover {
 /* Granite Playground — not built yet, so the placeholder reads as a held spot rather than a
    finished (green) tile: light gray instead, with a permanent "Coming soon" glass label
    (reuses .project-iframe-overlay's look, just without data-iframe-overlay so it never
-   dismisses). */
-.project-media__placeholder--granite {
+   dismisses). Shares its look with .project-media__placeholder--mobile-coming-soon below —
+   same treatment, different reason for showing. */
+.project-media__placeholder--granite,
+.project-media__placeholder--mobile-coming-soon {
     position: relative;
     background-color: var(--color-gray-10);
     border: 1px solid #e8e8e8;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+/* Mobile: the Homepage/Blog/About tabs embed research.ibm.com as a live, scrollable iframe —
+   workable with a mouse, but a cramped, fiddly experience on a touch screen sharing scroll
+   gestures with the page around it. Swap to the same static "Coming soon" placeholder Granite
+   already uses there instead of trying to make the live embed itself work on mobile. */
+.project-media__placeholder--mobile-coming-soon {
+    display: none;
+}
+
+@media (max-width: 671px) {
+    #ibm-research-website .project-iframe-frame {
+        display: none;
+    }
+
+    .project-media__placeholder--mobile-coming-soon {
+        display: block;
+    }
 }
 
 .project-media__image {
@@ -3405,33 +3425,19 @@ body.is-dark-page .project-pagination__link:hover {
     margin-left: auto;
 }
 
-/* Mobile: "All Work" stays put on its own row (not stretched — display:contents just lets it
-   and "Previous Project" act as direct flex children of .project-pagination again, so they can
-   be reordered independently of their shared wrapper div); a zero-height, full-width spacer
-   forces the wrap onto a new line after it; "Previous Project" and "Next Project" then share
-   that second row, with the existing margin-left:auto still pushing Next to the right edge. */
+/* Mobile: all three stay on one line — "All Work" keeps its icon and label, but "Previous
+   Project"/"Next Project" drop down to icon-only (font-size:0 collapses just the text node;
+   the icon keeps its own explicit font-size from the more specific rule above, so it's
+   unaffected) rather than wrapping to a second row or overflowing. */
 @media (max-width: 671px) {
-    .project-pagination__group {
-        display: contents;
+    .project-pagination {
+        flex-wrap: nowrap;
     }
 
-    .project-pagination__group > .project-pagination__link:first-child {
-        order: 1;
-    }
-
-    .project-pagination::before {
-        content: "";
-        order: 2;
-        flex-basis: 100%;
-        height: 0;
-    }
-
-    .project-pagination__group > .project-pagination__link:last-child {
-        order: 3;
-    }
-
+    .project-pagination__group > .project-pagination__link:last-child,
     .project-pagination__link--next {
-        order: 4;
+        gap: 0;
+        font-size: 0;
     }
 }
 
