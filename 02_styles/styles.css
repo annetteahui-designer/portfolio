@@ -5067,6 +5067,24 @@ body.show-media-weight .media-weight-flag {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+/* Mobile: four options (including the two-word "Granite Playground") don't fit the mobile
+   grid's 4 columns at full size — rather than letting a label wrap to two lines or the row
+   overflow the page, the row scrolls horizontally instead, with each pill kept at its own
+   full-text natural width (flex: 0 0 auto, no shrinking) so nothing wraps internally. */
+@media (max-width: 671px) {
+    .project-version-toggle {
+        flex-wrap: nowrap;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .project-version-toggle__option {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+}
+
 /* Playground: the V1/V2/V3 switch floats at the bottom centre so it never changes the layout of
    any version (it sits between the dev toggles at the right and the notes toolbar at the left) */
 .playground-versions {
