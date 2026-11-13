@@ -512,6 +512,17 @@ h6 {
     }
 }
 
+/* At 360px and below, the nav pill is already sitting close to the logo even before glass
+   triggers (see the nav-block gap clamp further down), so growing the column at the same time
+   the logo fades sweeps the pill's edge right past it mid-transition. Delaying the column/gap
+   shrink until the logo's own 0.4s fade is mostly done sequences the two instead of running
+   them together, so the logo is effectively gone before the pill starts moving into its space. */
+@media (max-width: 360px) {
+    .navbar--mobile-stretch .navbar__inner {
+        transition: grid-template-columns 0.4s ease 0.25s, column-gap 0.4s ease 0.25s;
+    }
+}
+
 .navbar__controls {
     display: flex;
     align-items: center;
