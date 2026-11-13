@@ -582,28 +582,31 @@ h6 {
     transition: background-color 0.4s ease, border-radius 0.4s ease, backdrop-filter 0.4s ease;
 }
 
-/* Mobile: the nav block's three links (Work/Playground/About) don't reliably fit beside the
-   logo on one row at the pill's full desktop gap/padding. Tightening both closes most of that
-   gap; letting .navbar__controls shrink below its own content's natural min-width (overridden
-   below) stops it forcing the grid track wider than the space actually available next to the
-   logo, which is what was causing the overlap rather than a graceful side-by-side fit. */
+/* Mobile: the nav pill itself keeps its 672px+ look exactly (same gap, same left/right
+   padding) — only the gutter between it and the logo gives ground as the screen narrows.
+   min-width:0 lets .navbar__controls actually shrink with that gutter instead of forcing the
+   grid track wider than the space next to the logo (the original cause of the overlap). The
+   gutter's clamp reads 16px at 672px (continuous with the range above) down to an 8px floor
+   around 360px — below that, the pill has nowhere left to give, so the second rule below takes
+   over and tightens the gap *between* the nav links instead, while their own pill padding
+   stays untouched throughout. */
 @media (max-width: 671px) {
     .navbar__controls {
         min-width: 0;
     }
 
-    .nav-block {
-        gap: var(--spacing-03);
-        padding: var(--spacing-02) var(--spacing-03);
+    .navbar__inner {
+        column-gap: clamp(8px, 2.564vw - 1.231px, var(--spacing-05));
     }
 }
 
-/* Below ~340px, keep the logo-to-nav gap as is (it reads well there) and instead let the nav's
-   own words sit closer together — the words compensating for the lost space reads better than
-   shrinking the one gap that's actually working. */
-@media (max-width: 340px) {
+/* Below ~360px the logo-to-pill gutter above has already hit its 8px floor, so from here down
+   the nav links' own gap closes instead (40px at 360px, matching the pill's untouched desktop
+   gap, down to an 8px floor around 300px) — the pill's left/right padding is never part of
+   this, only the space between the three links. */
+@media (max-width: 360px) {
     .nav-block {
-        gap: var(--spacing-01);
+        gap: clamp(8px, 53.33vw - 152px, 40px);
     }
 }
 
