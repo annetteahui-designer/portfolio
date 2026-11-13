@@ -510,6 +510,19 @@ h6 {
         grid-template-columns: 0px 1fr;
         column-gap: 0;
     }
+
+    /* .navbar__controls was only ever repositioning within its column (justify-self: end), never
+       actually resizing — so there was nothing for the freed space to visibly grow into. Stretch
+       it (and the pill inside it) to fill that column once glass triggers, so the pill itself
+       spans edge to edge instead of staying its original compact width. */
+    .navbar--mobile-stretch.is-minimal .navbar__controls {
+        justify-self: stretch;
+    }
+
+    .navbar--mobile-stretch.is-minimal .nav-block {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
 
 /* At 360px and below, the nav pill is already sitting close to the logo even before glass
