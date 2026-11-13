@@ -1091,6 +1091,10 @@ h6 {
     overflow: hidden;
     border-radius: var(--radius-media);
     transition: transform 0.25s ease;
+    /* Mobile browsers paint their own gray tap-highlight overlay on a tapped link, shaped to
+       its box — rounded corners included — which is what was showing here, not anything in
+       this site's own styling. */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .hero-banner__split-arrow:hover {
