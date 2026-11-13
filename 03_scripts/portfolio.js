@@ -3,7 +3,7 @@
     var USE_PLACEHOLDERS = true;
 
     var WORK_ITEMS = [
-        { title: 'IBM Research', media: 'Brand Design · Graphic Design · Web Design · Illustration · Motion Design', video: IMAGE_PATH + 'Homepage/lunar_1x1_blackAndWhite.mp4', ratio: '1-1', wide: true, link: 'project-ibm-research.html' },
+        { title: 'IBM Research', media: 'Brand Design · Graphic Design · Web Design · Illustration · Motion Design', video: IMAGE_PATH + 'Homepage/lunar_1x1_blackAndWhite.mp4', mobileStill: IMAGE_PATH + 'Homepage/lunar_1x1_blackAndWhite_still.jpg', ratio: '1-1', wide: true, link: 'project-ibm-research.html' },
         { title: 'The DocuSign Developer Library', media: 'Branding · Illustration', image: IMAGE_PATH + 'DocuSign/webPortfolio_docusign_frame_7.png', ratio: '1-1', forceImage: true, link: 'project-docusign.html' },
         { title: 'The Printed Forest', media: 'Personal Store', image: IMAGE_PATH + 'Printed Forest/webPortfolio_printedForest_bear.jpg', ratio: '1-1', forceImage: true, link: 'project-template.html' },
         { title: 'MetaMask', media: 'Graphic Design · Motion Design', video: IMAGE_PATH + 'Homepage/webPortfolio_MwM3.mp4', ratio: '9-16', link: 'project-metamask.html' },
@@ -31,7 +31,23 @@
         mediaWrap.className = 'mosaic__media';
         content.appendChild(mediaWrap);
 
-        if (item.video) {
+        if (item.video && item.mobileStill) {
+            var video = document.createElement('video');
+            video.className = 'mosaic__image mosaic__image--desktop-only ratio-' + item.ratio;
+            video.src = item.video;
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            mediaWrap.appendChild(video);
+
+            var stillImg = document.createElement('img');
+            stillImg.className = 'mosaic__image mosaic__image--mobile-still ratio-' + item.ratio;
+            stillImg.src = item.mobileStill;
+            stillImg.alt = item.title;
+            stillImg.loading = 'lazy';
+            mediaWrap.appendChild(stillImg);
+        } else if (item.video) {
             var video = document.createElement('video');
             video.className = 'mosaic__image ratio-' + item.ratio;
             video.src = item.video;

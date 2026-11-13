@@ -1778,6 +1778,22 @@ h6 {
     transition: transform 0.5s ease, filter 0.5s ease;
 }
 
+/* Same heavy-video-on-mobile fallback as .project-media__image--mobile-still, for work-grid
+   cards (a card opts in by giving its WORK_ITEMS entry both a video and a mobileStill). */
+.mosaic__image--mobile-still {
+    display: none;
+}
+
+@media (max-width: 671px) {
+    .mosaic__image--desktop-only {
+        display: none;
+    }
+
+    .mosaic__image--mobile-still {
+        display: block;
+    }
+}
+
 .mosaic__placeholder {
     width: 100%;
     background-color: var(--color-green);
@@ -4897,6 +4913,24 @@ body.show-media-weight .media-weight-flag {
 
 .project-video {
     position: relative;
+}
+
+/* Some videos are heavy enough that mobile connections struggle to autoplay them in time —
+   those get a pre-rendered still frame as a mobile fallback instead, with the real video kept
+   for desktop. Hidden by default so it stays inert unless a page actually opts in by pairing it
+   with .project-video--desktop-only. */
+.project-media__image--mobile-still {
+    display: none;
+}
+
+@media (max-width: 671px) {
+    .project-video--desktop-only {
+        display: none;
+    }
+
+    .project-media__image--mobile-still {
+        display: block;
+    }
 }
 
 .project-video__toggle {
