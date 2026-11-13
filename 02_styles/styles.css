@@ -2780,6 +2780,24 @@ body.is-dark-page .project-pagination__link:hover {
     .project-section__text {
         max-width: none;
     }
+
+    /* Desktop pages separate media groups with a deliberate 32px break (a few via this inline
+       style) to read as distinct rows. Once a page collapses to a single mobile column there
+       are no rows left to separate — just one continuous stack of media — so every one of
+       those breaks should match the page's regular 16px media gap instead of standing out as a
+       bigger, inconsistent jump. The !important is only to outrank the inline style itself;
+       nothing else targets these at this breakpoint. */
+    .project-media-grid[style*="margin-top: 32px"],
+    .compare-columns[style*="margin-top: 32px"] {
+        margin-top: var(--page-gutter) !important;
+    }
+
+    /* Same reasoning for a compare-columns column that stacks more than one media item inside
+       itself (e.g. an image above a video) — its own internal gap drops to the same 16px once
+       it's just another part of the single mobile stack. */
+    .compare-columns__col {
+        gap: var(--page-gutter) !important;
+    }
 }
 
 .project-section__text {
