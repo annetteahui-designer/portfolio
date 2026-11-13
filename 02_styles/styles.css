@@ -400,6 +400,28 @@ h6 {
     }
 }
 
+/* Mobile: the nav block's three links (Work/Playground/About) don't reliably fit beside the
+   logo on one row — depending on the device's font metrics they can crowd into or overflow
+   past it. Stacking the logo above a full-width nav row removes that fragile side-by-side fit
+   entirely instead of trying to squeeze both into half the bar. */
+@media (max-width: 671px) {
+    .navbar__inner {
+        grid-template-columns: 1fr;
+        row-gap: var(--spacing-03);
+        justify-items: start;
+    }
+
+    .navbar__controls {
+        justify-self: stretch;
+        width: 100%;
+    }
+
+    .nav-block {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
 /* the clock only has room once the bar can hold logo + clock + nav side by side */
 @media (min-width: 900px) {
     .navbar__inner {
