@@ -400,27 +400,6 @@ h6 {
     }
 }
 
-/* Mobile: the nav block's three links (Work/Playground/About) don't reliably fit beside the
-   logo on one row at the pill's full desktop gap/padding — depending on the device's font
-   metrics they can crowd into or overflow past it. Tightening the gap and padding (instead of
-   stacking the logo above a full-width row) keeps logo + nav side by side with room to spare
-   even on the narrowest phones. */
-@media (max-width: 671px) {
-    .nav-block {
-        gap: var(--spacing-04);
-        padding: var(--spacing-03) var(--spacing-04);
-    }
-}
-
-/* Below ~340px even the tightened nav above starts running out of room next to the logo.
-   Letting it close the last bit of breathing room and sit flush against the logo (rather than
-   overlapping it) buys back exactly the margin that's missing at these widths. */
-@media (max-width: 340px) {
-    .navbar__inner {
-        column-gap: 0;
-    }
-}
-
 /* the clock only has room once the bar can hold logo + clock + nav side by side */
 @media (min-width: 900px) {
     .navbar__inner {
@@ -601,6 +580,34 @@ h6 {
     background: var(--color-gray-10);
     border-radius: 999px;
     transition: background-color 0.4s ease, border-radius 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* Mobile: the nav block's three links (Work/Playground/About) don't reliably fit beside the
+   logo on one row at the pill's full desktop gap/padding. Tightening both closes most of that
+   gap; letting .navbar__controls shrink below its own content's natural min-width (overridden
+   below) stops it forcing the grid track wider than the space actually available next to the
+   logo, which is what was causing the overlap rather than a graceful side-by-side fit. */
+@media (max-width: 671px) {
+    .navbar__controls {
+        min-width: 0;
+    }
+
+    .nav-block {
+        gap: var(--spacing-03);
+        padding: var(--spacing-02) var(--spacing-03);
+    }
+}
+
+/* Below ~340px, close the logo-to-nav gap too and let the nav's own words sit closer together
+   — the words compensating for the lost space reads better than the nav overlapping the logo. */
+@media (max-width: 340px) {
+    .navbar__inner {
+        column-gap: 0;
+    }
+
+    .nav-block {
+        gap: var(--spacing-02);
+    }
 }
 
 /* glassmorphism state — white/gray glass, matching the old nav-pill treatment */
