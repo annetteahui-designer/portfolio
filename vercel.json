@@ -1,5 +1,6 @@
 {
   "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/01_index/index.html", "destination": "/", "permanent": true },
     { "source": "/01_index/about.html", "destination": "/about", "permanent": true },
     { "source": "/01_index/playground.html", "destination": "/playground", "permanent": true },
@@ -11,7 +12,9 @@
     { "source": "/01_index/project-metamask.html", "destination": "/project-metamask", "permanent": true },
     { "source": "/01_index/project-sovienty.html", "destination": "/project-sovienty", "permanent": true },
     { "source": "/01_index/project-template.html", "destination": "/project-template", "permanent": true },
-    { "source": "/01_index/project-ugly-dried-fruit.html", "destination": "/project-ugly-dried-fruit", "permanent": true }
+    { "source": "/01_index/project-ugly-dried-fruit.html", "destination": "/project-ugly-dried-fruit", "permanent": true },
+    { "source": "/01_index", "destination": "/", "permanent": true },
+    { "source": "/01_index/:page", "destination": "/:page", "permanent": true }
   ],
   "rewrites": [
     { "source": "/", "destination": "/01_index/index.html" },
@@ -25,6 +28,7 @@
     { "source": "/project-metamask", "destination": "/01_index/project-metamask.html" },
     { "source": "/project-sovienty", "destination": "/01_index/project-sovienty.html" },
     { "source": "/project-template", "destination": "/01_index/project-template.html" },
-    { "source": "/project-ugly-dried-fruit", "destination": "/01_index/project-ugly-dried-fruit.html" }
+    { "source": "/project-ugly-dried-fruit", "destination": "/01_index/project-ugly-dried-fruit.html" },
+    { "source": "/:page([^/]+\\.html)", "destination": "/01_index/:page" }
   ]
 }
