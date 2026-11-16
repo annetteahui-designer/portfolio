@@ -1,0 +1,30 @@
+{
+  "redirects": [
+    { "source": "/01_index/index.html", "destination": "/", "permanent": true },
+    { "source": "/01_index/about.html", "destination": "/about", "permanent": true },
+    { "source": "/01_index/playground.html", "destination": "/playground", "permanent": true },
+    { "source": "/01_index/project-consensys.html", "destination": "/project-consensys", "permanent": true },
+    { "source": "/01_index/project-corporation.html", "destination": "/project-corporation", "permanent": true },
+    { "source": "/01_index/project-docusign.html", "destination": "/project-docusign", "permanent": true },
+    { "source": "/01_index/project-ibm-research.html", "destination": "/project-ibm-research", "permanent": true },
+    { "source": "/01_index/project-layland.html", "destination": "/project-layland", "permanent": true },
+    { "source": "/01_index/project-metamask.html", "destination": "/project-metamask", "permanent": true },
+    { "source": "/01_index/project-sovienty.html", "destination": "/project-sovienty", "permanent": true },
+    { "source": "/01_index/project-template.html", "destination": "/project-template", "permanent": true },
+    { "source": "/01_index/project-ugly-dried-fruit.html", "destination": "/project-ugly-dried-fruit", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/01_index/index.html" },
+    { "source": "/about", "destination": "/01_index/about.html" },
+    { "source": "/playground", "destination": "/01_index/playground.html" },
+    { "source": "/project-consensys", "destination": "/01_index/project-consensys.html" },
+    { "source": "/project-corporation", "destination": "/01_index/project-corporation.html" },
+    { "source": "/project-docusign", "destination": "/01_index/project-docusign.html" },
+    { "source": "/project-ibm-research", "destination": "/01_index/project-ibm-research.html" },
+    { "source": "/project-layland", "destination": "/01_index/project-layland.html" },
+    { "source": "/project-metamask", "destination": "/01_index/project-metamask.html" },
+    { "source": "/project-sovienty", "destination": "/01_index/project-sovienty.html" },
+    { "source": "/project-template", "destination": "/01_index/project-template.html" },
+    { "source": "/project-ugly-dried-fruit", "destination": "/01_index/project-ugly-dried-fruit.html" }
+  ]
+}
