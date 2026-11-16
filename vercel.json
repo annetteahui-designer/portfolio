@@ -1,0 +1,12 @@
+{
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/01_index/index.html", "destination": "/", "permanent": true },
+    { "source": "/01_index", "destination": "/", "permanent": true },
+    { "source": "/01_index/:page", "destination": "/:page", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/01_index/index.html" },
+    { "source": "/:page([^/]+\\.html)", "destination": "/01_index/:page" }
+  ]
+}
