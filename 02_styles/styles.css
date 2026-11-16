@@ -3746,9 +3746,9 @@ body.is-dark-page .project-pagination__link:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
-    margin: -40px 0 0 -40px;
+    width: 84px;
+    height: 84px;
+    margin: -42px 0 0 -42px;
     border-radius: 50%;
     background: var(--color-hover);
     opacity: 0;
