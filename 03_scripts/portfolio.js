@@ -3,15 +3,15 @@
     var USE_PLACEHOLDERS = true;
 
     var WORK_ITEMS = [
-        { title: 'IBM Research', media: 'Brand Design · Graphic Design · Web Design · Illustration · Motion Design', video: IMAGE_PATH + 'Homepage/lunar_1x1_blackAndWhite.mp4', mobileVideo: IMAGE_PATH + '01_IBM/Graphics/blogArt_lunarFM_1080X1080.mp4', ratio: '1-1', wide: true, link: 'project-ibm-research.html' },
-        { title: 'The DocuSign Developer Library', media: 'Brand Design · Illustration', image: IMAGE_PATH + 'DocuSign/webPortfolio_docusign_frame_7.png', ratio: '1-1', forceImage: true, link: 'project-docusign.html' },
-        { title: 'The Printed Forest', media: 'Personal Store', image: IMAGE_PATH + 'Printed Forest/webPortfolio_printedForest_bear.jpg', ratio: '1-1', forceImage: true, link: 'project-template.html' },
-        { title: 'MetaMask', media: 'Graphic Design · Motion Design', video: IMAGE_PATH + 'Homepage/webPortfolio_MwM3.mp4', ratio: '9-16', link: 'project-metamask.html' },
-        { title: 'Consensys', media: 'Graphic Design · Motion Design · Web Design', image: IMAGE_PATH + 'Homepage/webPortfolio_consensys.png', ratio: '1-1', forceImage: true, link: 'project-consensys.html' },
-        { title: 'Sovereignty — The Video Game', media: 'Brand Design · Illustration', image: IMAGE_PATH + 'Homepage/webPortfolio_soverienty_cover.png', ratio: '16-9', wide: true, forceImage: true, link: 'project-sovienty.html' },
-        { title: 'C Stands for Corporation! Albertsons, Aetna, Toyota', media: 'Brand Design · Illustration', image: IMAGE_PATH + 'Homepage/webPortfolio_corporation.png', ratio: '1-1', forceImage: true, link: 'project-corporation.html' },
-        { title: 'Ugly Dried Fruit', media: 'Packaging Design · Illustration', image: IMAGE_PATH + 'Homepage/webPortfolio_ugly_cover.png', ratio: '16-9', wide: true, forceImage: true, link: 'project-ugly-dried-fruit.html' },
-        { title: 'Layland RV Park & Campsite', media: 'Brand Design', image: IMAGE_PATH + 'Layland/webPortfolio_layland_cardCover.png', ratio: '1-1', forceImage: true, link: 'project-layland.html' }
+        { title: 'IBM Research', media: 'Brand Design · Graphic Design · Web Design · Illustration · Motion Design', video: IMAGE_PATH + 'Homepage/lunar_1x1_blackAndWhite.mp4', mobileVideo: IMAGE_PATH + '01_IBM/Graphics/blogArt_lunarFM_1080X1080.mp4', ratio: '1-1', wide: true, link: '/project-ibm-research' },
+        { title: 'The DocuSign Developer Library', media: 'Brand Design · Illustration', image: IMAGE_PATH + 'DocuSign/webPortfolio_docusign_frame_7.png', ratio: '1-1', forceImage: true, link: '/project-docusign' },
+        { title: 'The Printed Forest', media: 'Personal Store', image: IMAGE_PATH + 'Printed Forest/webPortfolio_printedForest_bear.jpg', ratio: '1-1', forceImage: true, link: '/project-template' },
+        { title: 'MetaMask', media: 'Graphic Design · Motion Design', video: IMAGE_PATH + 'Homepage/webPortfolio_MwM3.mp4', ratio: '9-16', link: '/project-metamask' },
+        { title: 'Consensys', media: 'Graphic Design · Motion Design · Web Design', image: IMAGE_PATH + 'Homepage/webPortfolio_consensys.png', ratio: '1-1', forceImage: true, link: '/project-consensys' },
+        { title: 'Sovereignty — The Video Game', media: 'Brand Design · Illustration', image: IMAGE_PATH + 'Homepage/webPortfolio_soverienty_cover.png', ratio: '16-9', wide: true, forceImage: true, link: '/project-sovienty' },
+        { title: 'C Stands for Corporation! Albertsons, Aetna, Toyota', media: 'Brand Design · Illustration', image: IMAGE_PATH + 'Homepage/webPortfolio_corporation.png', ratio: '1-1', forceImage: true, link: '/project-corporation' },
+        { title: 'Ugly Dried Fruit', media: 'Packaging Design · Illustration', image: IMAGE_PATH + 'Homepage/webPortfolio_ugly_cover.png', ratio: '16-9', wide: true, forceImage: true, link: '/project-ugly-dried-fruit' },
+        { title: 'Layland RV Park & Campsite', media: 'Brand Design', video: IMAGE_PATH + 'Homepage/webPortfolio_layland_hero.mp4', ratio: '1-1', link: '/project-layland' }
     ];
 
     function renderTile(item, index) {
