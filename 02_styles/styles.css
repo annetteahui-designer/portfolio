@@ -1795,11 +1795,15 @@ h6 {
 .mosaic__tile-link[href="/project-docusign"]:hover .mosaic__image { filter: hue-rotate(280deg); }
 .mosaic__tile-link[href="/project-template"]:hover .mosaic__image { filter: hue-rotate(150deg); }
 .mosaic__tile-link[href="/project-consensys"]:hover .mosaic__image { filter: hue-rotate(240deg); }
-.mosaic__tile-link[href="/project-metamask"]:hover .mosaic__image { filter: hue-rotate(60deg); }
+.mosaic__tile-link[href="/project-metamask"]:hover .mosaic__image { filter: hue-rotate(290deg); }
 .mosaic__tile-link[href="/project-sovienty"]:hover .mosaic__image { filter: hue-rotate(180deg); }
 .mosaic__tile-link[href="project-student-debt-smarter.html"]:hover .mosaic__image { filter: hue-rotate(45deg); }
 .mosaic__tile-link[href="/project-ugly-dried-fruit"]:hover .mosaic__image { filter: hue-rotate(110deg); }
-.mosaic__tile-link[href="/project-layland"]:hover .mosaic__image { filter: hue-rotate(60deg); }
+/* The Layland card's hero video is muted/earthy — a plain hue-rotate had little saturated
+   color to grab onto, same issue the IBM moon video needed saturate() to fix. Boosting
+   saturation first makes whatever hue it rotates to read as an actual, noticeable color shift
+   instead of one muted tone swapping for another. */
+.mosaic__tile-link[href="/project-layland"]:hover .mosaic__image { filter: saturate(3) hue-rotate(200deg); }
 
 .mosaic__image {
     display: block;
