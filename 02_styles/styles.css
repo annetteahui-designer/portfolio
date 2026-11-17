@@ -1788,18 +1788,18 @@ h6 {
 
 /* the moon video is pure black-and-white, so hue-rotate alone has nothing to grab onto —
    sepia+saturate first injects color for it to rotate */
-.mosaic__tile-link[href="project-ibm-research.html"]:hover .mosaic__image {
+.mosaic__tile-link[href="/project-ibm-research"]:hover .mosaic__image {
     filter: sepia(1) saturate(6) hue-rotate(160deg);
 }
 
-.mosaic__tile-link[href="project-docusign.html"]:hover .mosaic__image { filter: hue-rotate(280deg); }
-.mosaic__tile-link[href="project-template.html"]:hover .mosaic__image { filter: hue-rotate(150deg); }
-.mosaic__tile-link[href="project-consensys.html"]:hover .mosaic__image { filter: hue-rotate(240deg); }
-.mosaic__tile-link[href="project-metamask.html"]:hover .mosaic__image { filter: hue-rotate(60deg); }
-.mosaic__tile-link[href="project-sovienty.html"]:hover .mosaic__image { filter: hue-rotate(180deg); }
+.mosaic__tile-link[href="/project-docusign"]:hover .mosaic__image { filter: hue-rotate(280deg); }
+.mosaic__tile-link[href="/project-template"]:hover .mosaic__image { filter: hue-rotate(150deg); }
+.mosaic__tile-link[href="/project-consensys"]:hover .mosaic__image { filter: hue-rotate(240deg); }
+.mosaic__tile-link[href="/project-metamask"]:hover .mosaic__image { filter: hue-rotate(60deg); }
+.mosaic__tile-link[href="/project-sovienty"]:hover .mosaic__image { filter: hue-rotate(180deg); }
 .mosaic__tile-link[href="project-student-debt-smarter.html"]:hover .mosaic__image { filter: hue-rotate(45deg); }
-.mosaic__tile-link[href="project-ugly-dried-fruit.html"]:hover .mosaic__image { filter: hue-rotate(110deg); }
-.mosaic__tile-link[href="project-layland.html"]:hover .mosaic__image { filter: hue-rotate(60deg); }
+.mosaic__tile-link[href="/project-ugly-dried-fruit"]:hover .mosaic__image { filter: hue-rotate(110deg); }
+.mosaic__tile-link[href="/project-layland"]:hover .mosaic__image { filter: hue-rotate(60deg); }
 
 .mosaic__image {
     display: block;
