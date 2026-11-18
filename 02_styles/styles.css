@@ -2866,33 +2866,16 @@ body.is-dark-page .project-pagination__link:hover {
 /* Granite Playground — not built yet, so the placeholder reads as a held spot rather than a
    finished (green) tile: light gray instead, with a permanent "Coming soon" glass label
    (reuses .project-iframe-overlay's look, just without data-iframe-overlay so it never
-   dismisses). Shares its look with .project-media__placeholder--mobile-coming-soon below —
-   same treatment, different reason for showing. */
-.project-media__placeholder--granite,
-.project-media__placeholder--mobile-coming-soon {
+   dismisses). The Homepage/Blog/About tabs reuse this same treatment now too — their live
+   research.ibm.com embed was workable with a mouse but a cramped, fiddly experience on touch,
+   so all four tabs now show the same static placeholder instead of maintaining a live embed
+   just for desktop. */
+.project-media__placeholder--granite {
     position: relative;
     background-color: var(--color-gray-10);
     border: 1px solid #e8e8e8;
     box-sizing: border-box;
     overflow: hidden;
-}
-
-/* Mobile: the Homepage/Blog/About tabs embed research.ibm.com as a live, scrollable iframe —
-   workable with a mouse, but a cramped, fiddly experience on a touch screen sharing scroll
-   gestures with the page around it. Swap to the same static "Coming soon" placeholder Granite
-   already uses there instead of trying to make the live embed itself work on mobile. */
-.project-media__placeholder--mobile-coming-soon {
-    display: none;
-}
-
-@media (max-width: 671px) {
-    #ibm-research-website .project-iframe-frame {
-        display: none;
-    }
-
-    .project-media__placeholder--mobile-coming-soon {
-        display: block;
-    }
 }
 
 .project-media__image {
