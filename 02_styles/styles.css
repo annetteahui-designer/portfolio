@@ -1763,6 +1763,44 @@ h6 {
     grid-column: 1 / -1;
 }
 
+/* Tablet range only (1056–1311px, the 3-column tier above): the Playground work grid's
+   default auto-packing doesn't read well here — frame341+tile.jpg+flowerSpiky would end up
+   crammed onto one row with flowerRegular left alone on the next, CLR/Paratus's usual
+   two-thirds width leaves an awkward sliver of empty column, and the computerBlue gif/duckTile
+   pair (each normally two-thirds) can't share a row at all. Explicit placement fixes all three
+   specifically for this range; every other breakpoint keeps the default spans untouched. */
+@media (min-width: 1056px) and (max-width: 1311px) {
+    #playground-work > .mosaic__tile:nth-child(1) {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    #playground-work > .mosaic__tile:nth-child(2) {
+        grid-row: 1;
+        grid-column: 2;
+    }
+
+    #playground-work > .mosaic__tile:nth-child(3) {
+        grid-row: 2;
+        grid-column: 1;
+    }
+
+    #playground-work > .mosaic__tile:nth-child(4) {
+        grid-row: 2;
+        grid-column: 2;
+    }
+
+    #playground-work > .mosaic__tile:nth-child(6),
+    #playground-work > .mosaic__tile:nth-child(7) {
+        grid-column: 1 / -1;
+    }
+
+    #playground-work > .mosaic__tile:nth-child(13),
+    #playground-work > .mosaic__tile:nth-child(14) {
+        grid-column: span 1;
+    }
+}
+
 .mosaic__tile {
     display: flex;
     flex-direction: column;
